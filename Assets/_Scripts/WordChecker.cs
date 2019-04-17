@@ -30,6 +30,7 @@ public class WordChecker : MonoBehaviour {
         Debug.Log("Set frequencies");
         letterFrequency = new Dictionary<string, int>();
         freq = 0;
+        List<string> letters = new List<string>();
         foreach (string word in words) {
             foreach (char letter in word) {
                 string l = letter + "";
@@ -37,12 +38,22 @@ public class WordChecker : MonoBehaviour {
                     letterFrequency[l]++;
                 } else {
                     letterFrequency.Add(l, 1);
+                    letters.Add(l);
                 }
                 freq++;
-
             }
 
         }
 
+        letters.Sort(compare);
+
+        for (int i = 0; i < letters.Count; i++) {
+            Debug.Log(letters[i] + "=" + letterFrequency[letters[i]]);
+        }
+
+    }
+
+    private static int compare(string letter1, string letter2 ){
+        return letterFrequency[letter1] > letterFrequency[letter2] ? 1 : 0;
     }
 }

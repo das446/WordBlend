@@ -6,7 +6,7 @@ public interface InputMode
 {
    void OnClick();
    void OnClick(Vector2 v);
-   void OnClick(Tile t);
+   void OnClick(Tile t, Board board);
    void Enter();
    void Exit();
 }

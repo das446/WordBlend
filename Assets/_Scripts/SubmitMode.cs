@@ -13,6 +13,8 @@ public class SubmitMode : MonoBehaviour, InputMode {
     List<GameObject> ringPool = new List<GameObject>();
     [SerializeField] GameObject ring;
 
+    public static event Action<Word> Submit; 
+
     public void Enter() {
         submitButton.gameObject.SetActive(true);
         gameObject.SetActive(true);
@@ -35,8 +37,17 @@ public class SubmitMode : MonoBehaviour, InputMode {
         
     }
 
-    public void OnClick(Tile t) {
+    public void OnClick(Tile t, Board board) {
         bool valid = false;
+
+        int x = t.pos.x;
+        List<Tile> tiles = new List<Tile>();
+
+        while(x<board.width){
+            tiles.Add(board.Get(x,t.pos.y));
+        } 
+
+        
 
         if (selectedTiles.Count == 0) {
             selectedTiles.Add(t);
@@ -71,16 +82,18 @@ public class SubmitMode : MonoBehaviour, InputMode {
     public string CurWord() {
         string s = "";
         for (int i = 0; i < selectedTiles.Count; i++) {
-            s = s + selectedTiles[i].letter.name.ToLower();
+            s = s + selectedTiles[i].letter.ToString.ToLower();
         }
         return s;
     }
 
-    public void SubmitWord() {
-        Debug.Log(CurWord());
-        bool valid = WordChecker.CheckWord(CurWord());
+    public void SubmitWord(Word word) {
+        bool valid = WordChecker.CheckWord(word.ToString());
         if (valid) {
+            Submit(word);
+
             Debug.Log("Valid");
+
         } else {
             Debug.Log("Invalid");
         }

@@ -23,18 +23,18 @@ public class Tile : MonoBehaviour {
 
     public void SetPos(Vector2Int p) {
         pos = p;
-        transform.position = new Vector3(p.x, p.y, 0);
     }
     public void Offset(Vector2Int p) {
         pos = pos + p;
-        transform.position = new Vector3(pos.x, pos.y, 0);
     }
     public void Offset(int x, int y) {
         Offset(new Vector2Int(x, y));
     }
 
     public void OnMouseDown() {
-        OnClick(this);
+        if (OnClick != null) {
+            OnClick(this);
+        }
     }
 
     public Tile Create(Vector2Int pos, Letter letter) {

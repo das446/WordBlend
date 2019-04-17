@@ -18,7 +18,7 @@ public class InputController : MonoBehaviour {
     }
 
     private void OnTileClick(Tile tile) {
-        curMode.OnClick(tile);
+        curMode.OnClick(tile, board);
     }
 
     void Update() {

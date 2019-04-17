@@ -6,4 +6,6 @@ using UnityEngine;
 public class Letter : ScriptableObject {
     public Sprite image;
 
+    public new string ToString => name;
+
 }

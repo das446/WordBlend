@@ -40,6 +40,10 @@ public class Board : MonoBehaviour {
         return Get(pos + new Vector2Int(x, y));
     }
 
+    public Tile Get(int x, int y) {
+        return Get(new Vector2Int(x, y));
+    }
+
     public void RotateClockwise(Vector2Int pivot) {
         Tile sw = Get(pivot);
         Tile nw = Get(pivot, 0, 1);

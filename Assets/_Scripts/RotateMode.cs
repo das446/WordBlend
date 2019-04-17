@@ -43,13 +43,13 @@ public class RotateMode : MonoBehaviour, InputMode {
 
     }
 
-    public void OnClick(Vector2 v) {
-        
-    }
+    public void OnClick(Vector2 v) { }
 
-    public void OnClick(Tile t) {
-        OnClick();
-        board.RotateClockwise(t.transform.position.ToVector2Int());
+    public void OnClick(Tile t, Board board) {
+        int originx = (int) (transform.position.x - 0.5f);
+        int originy = (int) (transform.position.y - 0.5f);
+
+        board.RotateClockwise(new Vector2Int(originx, originy));
     }
 
     public void Enter() {
