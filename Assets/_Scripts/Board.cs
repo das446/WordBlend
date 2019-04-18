@@ -12,6 +12,8 @@ public class Board : MonoBehaviour {
 
     [SerializeField] Tile baseTile;
     [SerializeField] List<Letter> letters;
+    [SerializeField] int lockedAmnt;
+    [SerializeField] int minVowels;
 
     void Start() {
         for (int x = 0; x < width; x++) {
@@ -21,6 +23,11 @@ public class Board : MonoBehaviour {
                 tiles.Add(t);
                 t.transform.parent = transform;
             }
+        }
+
+        List<Tile> toLock = tiles.RandomItems(3);
+        foreach (Tile item in toLock) {
+            item.Lock();
         }
     }
 
@@ -42,6 +49,14 @@ public class Board : MonoBehaviour {
 
     public Tile Get(int x, int y) {
         return Get(new Vector2Int(x, y));
+    }
+
+    public void Rotate(Vector2Int pivot, bool clockwise) {
+        if (clockwise) {
+            RotateClockwise(pivot);
+        } else {
+            RotateCounterClockwise(pivot);
+        }
     }
 
     public void RotateClockwise(Vector2Int pivot) {
@@ -107,6 +122,20 @@ public class Board : MonoBehaviour {
         }
         return letters.Last();
 
+    }
+
+    public Letter RandomVowel()
+    {
+        return letters.RandomItem(IsVowel);
+    }
+
+    private static bool IsVowel(Letter x)
+    {
+        return x.name == "A" || x.name == "E" || x.name == "I" || x.name == "O" || x.name == "U";
+    }
+
+    public int CurrentVowels(){
+        return tiles.Where(x=>IsVowel(x.letter)).Count();
     }
 
 }

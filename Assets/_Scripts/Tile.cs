@@ -10,10 +10,10 @@ public class Tile : MonoBehaviour {
     public Letter letter;
     [SerializeField] SpriteRenderer image;
     [SerializeField] TMP_Text letterDisplay;
-    [SerializeField] bool moveable;
+    [SerializeField] TextMeshPro tmp;
+    [SerializeField] public bool moveable;
     static List<Tile> objectPool = new List<Tile>();
     [SerializeField] float min;
-
 
     public static event Action<Tile> OnClick;
     public static event Action<Tile> OnHover;
@@ -42,7 +42,7 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    public void OnMouseOver(){
+    public void OnMouseOver() {
         OnHover(this);
     }
 
@@ -75,6 +75,11 @@ public class Tile : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         SetLetter(l);
+        if (moveable) {
+            RandomLock();
+        } else {
+            Unlock();
+        }
         while (s < x) {
             s += Time.deltaTime * scaleSpeed;
             transform.localScale = new Vector3(s, s, 1);
@@ -85,7 +90,29 @@ public class Tile : MonoBehaviour {
         transform.localScale = new Vector3(x, x, 1);
     }
 
+    public void RandomLock() {
+        if (UnityEngine.Random.Range(0, 10) == 0) {
+            Lock();
+        }
+    }
+
     public new string ToString() {
         return letter.ToString();
     }
+
+    public void Lock() {
+        moveable = false;
+        image.color = Color.grey;
+        letterDisplay.color = Color.white;
+        //tmp.color = Color.white;
+    }
+
+    public void Unlock() {
+        moveable = true;
+        image.color = Color.white;
+        letterDisplay.color = Color.black;
+        //tmp.color = Color.black;
+
+    }
+
 }

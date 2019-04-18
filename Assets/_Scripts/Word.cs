@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Word : MonoBehaviour {
+public class Word {
     public List<Tile> letters;
 
     public Word(List<Tile> letters) {

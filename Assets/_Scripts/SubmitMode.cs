@@ -19,16 +19,14 @@ public class SubmitMode : MonoBehaviour, InputMode {
     [SerializeField] float rotSpeed;
 
     public void Enter() {
-        submitButton.gameObject.SetActive(true);
+        //submitButton.gameObject.SetActive(true);
         gameObject.SetActive(true);
     }
 
     public void Exit() {
-        foreach (GameObject g in ringPool) {
-            g.SetActive(false);
-        }
+        ClearRings();
         selectedTiles = new List<Tile>();
-        submitButton.gameObject.SetActive(false);
+        //submitButton.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -41,6 +39,14 @@ public class SubmitMode : MonoBehaviour, InputMode {
     }
 
     public void OnClick(Tile t) {
+        Word word = GetLongestWord(t);
+
+        if (word != null) {
+            SubmitWord(word);
+        }
+    }
+
+    private Word GetLongestWord(Tile t) {
         bool valid = false;
 
         int x = t.pos.x;
@@ -52,7 +58,6 @@ public class SubmitMode : MonoBehaviour, InputMode {
         }
 
         Word word = new Word(tiles);
-        Debug.Log(word.ToString());
 
         while (word.Length() > 2 && !valid) {
             valid = WordChecker.CheckWord(word);
@@ -62,7 +67,9 @@ public class SubmitMode : MonoBehaviour, InputMode {
         }
 
         if (valid) {
-            SubmitWord(word);
+            return word;
+        } else {
+            return null;
         }
     }
 
@@ -90,7 +97,32 @@ public class SubmitMode : MonoBehaviour, InputMode {
 
     public void SubmitWord(Word word) {
         foreach (Tile tile in word.letters) {
-            StartCoroutine(tile.ChangeLetter(board.RandomLetter(), scaleSpeed, rotSpeed));
+            Letter l = board.RandomLetter();
+            if (board.CurrentVowels() < 4) {
+                l = board.RandomVowel();
+            }
+            StartCoroutine(tile.ChangeLetter(l, scaleSpeed, rotSpeed));
+        }
+        Submit(word);
+    }
+
+    public bool CanExit() {
+        return true;
+    }
+
+    public void OnHover(Tile t) {
+        Word word = GetLongestWord(t);
+        ClearRings();
+        if (word != null) {
+            foreach (Tile tile in word.letters) {
+                MakeRing(tile.transform.position);
+            }
+        }
+    }
+
+    private void ClearRings() {
+        foreach (GameObject g in ringPool) {
+            g.SetActive(false);
         }
     }
 }

@@ -13,7 +13,6 @@ public class RotateMode : MonoBehaviour, InputMode {
     bool clockWise = true;
 
     bool canRotate = true;
-    void Start() { }
 
     void Update() {
         if (!active) { return; }
@@ -76,15 +75,33 @@ public class RotateMode : MonoBehaviour, InputMode {
             Debug.Log("Changed y");
         }
 
-        Tile nw = board.Get(t.pos, 0, 1);
-        Tile ne = board.Get(t.pos, 1, 1);
-        Tile se = board.Get(t.pos, 1, 0);
-
-        RotatePieces(t, nw, ne, se);
+        Rotate(t);
 
     }
 
-    public void RotatePieces(Tile sw, Tile nw, Tile ne, Tile se) {
+    private void RotateCounterClockwise(Tile t) {
+        throw new NotImplementedException();
+    }
+
+    private void Rotate(Tile t) {
+        Tile nw = board.Get(t.pos, 0, 1);
+        Tile ne = board.Get(t.pos, 1, 1);
+        Tile se = board.Get(t.pos, 1, 0);
+        if (t.moveable && nw.moveable && ne.moveable && se.moveable) {
+            RotatePieces(t, nw, ne, se);
+        }
+    }
+
+    private void RotatePieces(Tile sw, Tile nw, Tile ne, Tile se) {
+        if (clockWise) {
+            RotatePiecesClockwise(sw, nw, ne, se);
+        }
+        else{
+            RotatePiecesCounterClockwise(sw, nw, ne, se);
+        }
+    }
+
+    public void RotatePiecesClockwise(Tile sw, Tile nw, Tile ne, Tile se) {
 
         canRotate = false;
 
@@ -92,7 +109,25 @@ public class RotateMode : MonoBehaviour, InputMode {
         Vector2 nwTarget = ne.transform.position;
         Vector2 neTarget = se.transform.position;
         Vector2 seTarget = sw.transform.position;
-        board.RotateClockwise(sw.pos);
+        board.Rotate(sw.pos, clockWise);
+        StartCoroutine(MovePiece(sw, swTarget));
+        StartCoroutine(MovePiece(nw, nwTarget));
+        StartCoroutine(MovePiece(ne, neTarget));
+        StartCoroutine(MovePiece(se, seTarget));
+
+        //yield return new WaitUntil(() => canRotate);
+
+    }
+
+    public void RotatePiecesCounterClockwise(Tile sw, Tile nw, Tile ne, Tile se) {
+
+        canRotate = false;
+
+        Vector2 swTarget = se.transform.position;
+        Vector2 nwTarget = sw.transform.position;
+        Vector2 neTarget = nw.transform.position;
+        Vector2 seTarget = ne.transform.position;
+        board.Rotate(sw.pos, clockWise);
         StartCoroutine(MovePiece(sw, swTarget));
         StartCoroutine(MovePiece(nw, nwTarget));
         StartCoroutine(MovePiece(ne, neTarget));
@@ -115,11 +150,21 @@ public class RotateMode : MonoBehaviour, InputMode {
         active = true;
         ring.gameObject.SetActive(true);
         gameObject.SetActive(true);
+        canRotate = true;
     }
 
     public void Exit() {
         active = false;
         ring.gameObject.SetActive(false);
         gameObject.SetActive(false);
+    }
+
+    public bool CanExit()
+    {
+        return canRotate;
+    }
+
+    public void OnHover(Tile t)
+    {
     }
 }

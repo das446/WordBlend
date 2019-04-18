@@ -21,6 +21,19 @@ public static class ExtensionMethods {
         return list[UnityEngine.Random.Range(0, list.Count)];
 
     }
+
+    public static List<T> RandomItems<T>(this List<T> list, int amnt) {
+        List<T> temp = new List<T>(list);
+        List<T> items = new List<T>();
+        for (int i = 0; i < amnt; i++) {
+            T item = temp.RandomItem();
+            items.Add(item);
+            temp.Remove(item);
+        }
+        return items;
+
+    }
+
     public static T RandomItem<T>(this T[] array) {
         return array[UnityEngine.Random.Range(0, array.Length)];
 
@@ -181,7 +194,7 @@ public static class ExtensionMethods {
     }
 
     public static Vector2Int ToVector2Int(this Vector3 v) {
-        return new Vector2Int((int)v.x, (int)v.y);
+        return new Vector2Int((int) v.x, (int) v.y);
     }
 
 }

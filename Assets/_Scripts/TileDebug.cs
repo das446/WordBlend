@@ -14,6 +14,7 @@ public class TileDebug : MonoBehaviour {
 
     // Update is called once per frame
     void UpdateDebug(Tile t) {
-        text.text = t.letter.name + "," + t.pos.x + "," + t.pos.y;
+        string locked = t.moveable? "not locked": "locked";
+        text.text = t.letter.name + "," + t.pos.x + "," + t.pos.y + "," + locked;
     }
 }

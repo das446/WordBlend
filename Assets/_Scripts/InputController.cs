@@ -14,7 +14,13 @@ public class InputController : MonoBehaviour {
     void Start() {
         curMode = rotateMode;
         Tile.OnClick += OnTileClick;
+        Tile.OnHover +=OnTileHover;
 
+    }
+
+    private void OnTileHover(Tile tile)
+    {
+        curMode.OnHover(tile);
     }
 
     private void OnTileClick(Tile tile) {
@@ -26,7 +32,7 @@ public class InputController : MonoBehaviour {
             Vector2 mousePos = GetMousePos();
             curMode.OnClick(mousePos);
 
-        } else if (Input.GetKeyDown(KeyCode.Space)) {
+        } else if (Input.GetKeyDown(KeyCode.Space) && curMode.CanExit()) {
             SwitchMode();
         }
     }
