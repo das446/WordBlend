@@ -1,45 +1,52 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotateMode : MonoBehaviour, InputMode
-{
+public class RotateMode : MonoBehaviour, InputMode {
     [SerializeField] GameObject ring;
     [SerializeField] Board board;
     [SerializeField] bool active;
-    [SerializeField] float rotSpeed;
+    [SerializeField] float tileRotSpeed;
+    [SerializeField] float gradRotSpeed;
+    [SerializeField] GameObject gradient;
+    bool clockWise = true;
+
+    bool canRotate = true;
     void Start() { }
 
-    void Update()
-    {
+    void Update() {
         if (!active) { return; }
+        if (Input.GetKeyDown(KeyCode.R)) {
+            clockWise = !clockWise;
+        }
+
+        RotateGrad();
 
         MoveCircle();
 
     }
 
-    private void MoveCircle()
-    {
+    private void RotateGrad() {
+        int c = clockWise? - 1 : 1;
+        gradient.transform.Rotate(0, 0, gradRotSpeed * c * Time.deltaTime);
+    }
+
+    private void MoveCircle() {
         Vector2 mouse = Input.mousePosition;
         mouse = Camera.main.ScreenToWorldPoint(mouse);
         float x = Mathf.Round(mouse.x) + 0.5f;
         float y = Mathf.Round(mouse.y) + 0.5f;
 
-        if (x > board.width - 1.5f)
-        {
+        if (x > board.width - 1.5f) {
             x = board.width - 1.5f;
-        }
-        else if (x < 0.5f)
-        {
+        } else if (x < 0.5f) {
             x = 0.5f;
         }
 
-        if (y > board.height - 1.5f)
-        {
+        if (y > board.height - 1.5f) {
             y = board.height - 1.5f;
-        }
-        else if (y < 0.5f)
-        {
+        } else if (y < 0.5f) {
             y = 0.5f;
         }
 
@@ -48,25 +55,23 @@ public class RotateMode : MonoBehaviour, InputMode
         ring.transform.position = mouseRounded;
     }
 
-    public void OnClick()
-    {
+    public void OnClick() {
 
     }
 
-    public void OnClick(Vector2 v)
-    {
+    public void OnClick(Vector2 v) {
 
     }
 
-    public void OnClick(Tile t)
-    {
-        if (t.pos.x >= board.width - 1)
-        {
+    public void OnClick(Tile t) {
+
+        if (!canRotate) { return; }
+
+        if (t.pos.x >= board.width - 1) {
             t = board.Get(t.pos, -1, 0);
             Debug.Log("Changed x");
         }
-        if (t.pos.y >= board.height - 1)
-        {
+        if (t.pos.y >= board.height - 1) {
             t = board.Get(t.pos, 0, -1);
             Debug.Log("Changed y");
         }
@@ -75,55 +80,46 @@ public class RotateMode : MonoBehaviour, InputMode
         Tile ne = board.Get(t.pos, 1, 1);
         Tile se = board.Get(t.pos, 1, 0);
 
+        RotatePieces(t, nw, ne, se);
 
-
-        StartCoroutine(RotatePieces(t, nw, ne, se));
-        
     }
 
-    public IEnumerator RotatePieces(Tile sw, Tile nw, Tile ne, Tile se)
-    {
+    public void RotatePieces(Tile sw, Tile nw, Tile ne, Tile se) {
+
+        canRotate = false;
 
         Vector2 swTarget = nw.transform.position;
         Vector2 nwTarget = ne.transform.position;
         Vector2 neTarget = se.transform.position;
         Vector2 seTarget = sw.transform.position;
+        board.RotateClockwise(sw.pos);
         StartCoroutine(MovePiece(sw, swTarget));
         StartCoroutine(MovePiece(nw, nwTarget));
         StartCoroutine(MovePiece(ne, neTarget));
         StartCoroutine(MovePiece(se, seTarget));
-        
 
-        yield return new WaitForSeconds(1);
-        board.RotateClockwise(sw.transform.position.ToVector2Int());
+        //yield return new WaitUntil(() => canRotate);
 
     }
 
-    public IEnumerator MovePiece(Tile t, Vector2 target)
-    {
-        while (Vector3.Distance(t.transform.position, target) > 0.0001f)
-        {
-            t.transform.position = Vector3.Lerp(t.transform.position, target, Time.deltaTime * rotSpeed);
+    public IEnumerator MovePiece(Tile t, Vector2 target) {
+        while (Vector3.Distance(t.transform.position, target) > 0.001f) {
+            t.transform.position = Vector3.Lerp(t.transform.position, target, Time.deltaTime * tileRotSpeed);
             yield return new WaitForEndOfFrame();
         }
+        t.transform.position = target;
+        canRotate = true;
     }
 
-    public void Enter()
-    {
+    public void Enter() {
         active = true;
         ring.gameObject.SetActive(true);
         gameObject.SetActive(true);
     }
 
-    public void Exit()
-    {
+    public void Exit() {
         active = false;
         ring.gameObject.SetActive(false);
         gameObject.SetActive(false);
-    }
-
-    public void OnClick(Tile t, Board board)
-    {
-        throw new System.NotImplementedException();
     }
 }

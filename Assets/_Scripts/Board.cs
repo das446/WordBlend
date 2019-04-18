@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Board : MonoBehaviour
-{
+public class Board : MonoBehaviour {
     [SerializeField] List<Tile> tiles;
     public int width, height;
 
@@ -14,12 +13,9 @@ public class Board : MonoBehaviour
     [SerializeField] Tile baseTile;
     [SerializeField] List<Letter> letters;
 
-    void Start()
-    {
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
+    void Start() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 Letter l = RandomLetter();
                 Tile t = baseTile.Create(new Vector2Int(x, y), l);
                 tiles.Add(t);
@@ -28,12 +24,10 @@ public class Board : MonoBehaviour
         }
     }
 
-    public Tile Get(Vector2Int pos)
-    {
+    public Tile Get(Vector2Int pos) {
         CheckBounds(pos);
         Tile tile = tiles.First(t => t.pos == pos && t.gameObject.activeSelf);
-        if (tile == null)
-        {
+        if (tile == null) {
             throw new System.NullReferenceException("No tile at pos=" + pos);
         }
         return tile;
@@ -42,8 +36,7 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Returns a tile at pos + offset x and y
     /// </summary>
-    public Tile Get(Vector2Int pos, int x, int y)
-    {
+    public Tile Get(Vector2Int pos, int x, int y) {
         return Get(pos + new Vector2Int(x, y));
     }
 
@@ -62,14 +55,12 @@ public class Board : MonoBehaviour
         ne.Offset(0, -1);
         se.Offset(-1, 0);
 
-        if (BoardChange != null)
-        {
+        if (BoardChange != null) {
             BoardChange(this);
         }
     }
 
-    public void RotateCounterClockwise(Vector2Int pivot)
-    {
+    public void RotateCounterClockwise(Vector2Int pivot) {
         Tile sw = Get(pivot);
         Tile nw = Get(pivot, 0, 1);
         Tile ne = Get(pivot, 1, 1);
@@ -80,51 +71,36 @@ public class Board : MonoBehaviour
         ne.Offset(-1, 0);
         se.Offset(0, 1);
 
-        if (BoardChange != null)
-        {
+        if (BoardChange != null) {
             BoardChange(this);
         }
     }
 
-    public IEnumerator RotateAnimation(Vector2Int pivot)
-    {
+    public IEnumerator RotateAnimation(Vector2Int pivot) {
         yield return null;
     }
 
-    void CheckBounds(Vector2Int pos)
-    {
-        if (pos.x >= width)
-        {
+    void CheckBounds(Vector2Int pos) {
+        if (pos.x >= width) {
             throw new System.IndexOutOfRangeException("pos.x=" + pos.x + " greater than width=" + width);
-        }
-        else if (pos.x < 0)
-        {
+        } else if (pos.x < 0) {
             throw new System.IndexOutOfRangeException("pos.x=" + pos.x + " less than 0");
-        }
-        else if (pos.y >= height)
-        {
+        } else if (pos.y >= height) {
             throw new System.IndexOutOfRangeException("pos.y=" + pos.y + "greater than height=" + height);
-        }
-        else if (pos.y < 0)
-        {
+        } else if (pos.y < 0) {
             throw new System.IndexOutOfRangeException("pos.y=" + pos.y + "less than 0");
         }
     }
 
-    Letter RandomLetter()
-    {
+    public Letter RandomLetter() {
         int max = WordChecker.freq;
         int r = UnityEngine.Random.Range(0, max);
         int i = 0;
 
-        foreach (string l in WordChecker.letterFrequency.Keys)
-        {
-            if (i >= r)
-            {
+        foreach (string l in WordChecker.letterFrequency.Keys) {
+            if (i >= r) {
                 return letters.Where(x => x.name.ToLower() == l).First();
-            }
-            else
-            {
+            } else {
                 i += WordChecker.letterFrequency[l];
 
             }

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Word : MonoBehaviour {
-    List<Tile> letters;
+    public List<Tile> letters;
 
     public Word(List<Tile> letters) {
         this.letters = new List<Tile>(letters);
+    }
+
+    public int Length(){
+        return letters.Count;
     }
 
     public Word RemoveLast() {
@@ -18,9 +22,9 @@ public class Word : MonoBehaviour {
     public new string ToString() {
         string s = "";
         for (int i = 0; i < letters.Count; i++) {
-            s = s + letters[i].ToString();
+            s = s + letters[i].letter.name;
         }
-        return s;
+        return s.ToLower();
     }
 
     public Tile this [int i] {

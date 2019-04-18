@@ -12,8 +12,11 @@ public class Tile : MonoBehaviour {
     [SerializeField] TMP_Text letterDisplay;
     [SerializeField] bool moveable;
     static List<Tile> objectPool = new List<Tile>();
+    [SerializeField] float min;
+
 
     public static event Action<Tile> OnClick;
+    public static event Action<Tile> OnHover;
 
     public void SetLetter(Letter l) {
         letter = l;
@@ -23,9 +26,11 @@ public class Tile : MonoBehaviour {
 
     public void SetPos(Vector2Int p) {
         pos = p;
+        transform.position = new Vector2(p.x, p.y);
     }
     public void Offset(Vector2Int p) {
         pos = pos + p;
+        //transform.position = new Vector2(pos.x, pos.y);
     }
     public void Offset(int x, int y) {
         Offset(new Vector2Int(x, y));
@@ -35,6 +40,10 @@ public class Tile : MonoBehaviour {
         if (OnClick != null) {
             OnClick(this);
         }
+    }
+
+    public void OnMouseOver(){
+        OnHover(this);
     }
 
     public Tile Create(Vector2Int pos, Letter letter) {
@@ -56,4 +65,27 @@ public class Tile : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
+    public IEnumerator ChangeLetter(Letter l, float scaleSpeed, float rotSpeed) {
+        float s = transform.localScale.x;
+        float x = s;
+        while (s > min) {
+            s -= Time.deltaTime * scaleSpeed;
+            transform.localScale = new Vector3(s, s, 1);
+            transform.Rotate(0, 0, -s * rotSpeed);
+            yield return new WaitForEndOfFrame();
+        }
+        SetLetter(l);
+        while (s < x) {
+            s += Time.deltaTime * scaleSpeed;
+            transform.localScale = new Vector3(s, s, 1);
+            transform.Rotate(0, 0, -s * rotSpeed);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.rotation = Quaternion.identity;
+        transform.localScale = new Vector3(x, x, 1);
+    }
+
+    public new string ToString() {
+        return letter.ToString();
+    }
 }

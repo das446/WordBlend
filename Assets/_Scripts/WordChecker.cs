@@ -22,8 +22,8 @@ public class WordChecker : MonoBehaviour {
 
     }
 
-    public static bool CheckWord(string word) {
-        return words.Contains(word);
+    public static bool CheckWord(Word word) {
+        return words.Contains(word.ToString());
     }
 
     static void SetLetterFrequencies() {
