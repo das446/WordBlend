@@ -125,4 +125,5 @@ public class SubmitMode : MonoBehaviour, InputMode {
             g.SetActive(false);
         }
     }
+
 }

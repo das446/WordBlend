@@ -95,8 +95,7 @@ public class RotateMode : MonoBehaviour, InputMode {
     private void RotatePieces(Tile sw, Tile nw, Tile ne, Tile se) {
         if (clockWise) {
             RotatePiecesClockwise(sw, nw, ne, se);
-        }
-        else{
+        } else {
             RotatePiecesCounterClockwise(sw, nw, ne, se);
         }
     }
@@ -142,6 +141,7 @@ public class RotateMode : MonoBehaviour, InputMode {
             t.transform.position = Vector3.Lerp(t.transform.position, target, Time.deltaTime * tileRotSpeed);
             yield return new WaitForEndOfFrame();
         }
+        t.image.sortingOrder = board.height - (int) target.y;
         t.transform.position = target;
         canRotate = true;
     }
@@ -159,12 +159,9 @@ public class RotateMode : MonoBehaviour, InputMode {
         gameObject.SetActive(false);
     }
 
-    public bool CanExit()
-    {
+    public bool CanExit() {
         return canRotate;
     }
 
-    public void OnHover(Tile t)
-    {
-    }
+    public void OnHover(Tile t) { }
 }

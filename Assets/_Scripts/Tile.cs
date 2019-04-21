@@ -8,8 +8,8 @@ using UnityEngine;
 public class Tile : MonoBehaviour {
     public Vector2Int pos;
     public Letter letter;
-    [SerializeField] SpriteRenderer image;
-    [SerializeField] TMP_Text letterDisplay;
+    public SpriteRenderer image;
+    [SerializeField] SpriteRenderer background;
     [SerializeField] TextMeshPro tmp;
     [SerializeField] public bool moveable;
     static List<Tile> objectPool = new List<Tile>();
@@ -102,15 +102,13 @@ public class Tile : MonoBehaviour {
 
     public void Lock() {
         moveable = false;
-        image.color = Color.grey;
-        letterDisplay.color = Color.white;
+        background.enabled = true;
         //tmp.color = Color.white;
     }
 
     public void Unlock() {
         moveable = true;
-        image.color = Color.white;
-        letterDisplay.color = Color.black;
+        background.enabled = false;
         //tmp.color = Color.black;
 
     }
