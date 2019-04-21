@@ -113,7 +113,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
     public void OnHover(Tile t) {
         Word word = GetLongestWord(t);
         ClearRings();
-        if (word != null) {
+        if (word != null && t.moveable) {
             foreach (Tile tile in word.letters) {
                 MakeRing(tile.transform.position);
             }
