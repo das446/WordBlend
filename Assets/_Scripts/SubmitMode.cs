@@ -39,14 +39,14 @@ public class SubmitMode : MonoBehaviour, InputMode {
     }
 
     public void OnClick(Tile t) {
-        Word word = GetLongestWord(t);
+        Word word = GetLongestWordHorizontal(t);
 
         if (word != null) {
             SubmitWord(word);
         }
     }
 
-    private Word GetLongestWord(Tile t) {
+    private Word GetLongestWordHorizontal(Tile t) {
         bool valid = false;
 
         int x = t.pos.x;
@@ -111,7 +111,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
     }
 
     public void OnHover(Tile t) {
-        Word word = GetLongestWord(t);
+        Word word = GetLongestWordHorizontal(t);
         ClearRings();
         if (word != null && t.moveable) {
             foreach (Tile tile in word.letters) {

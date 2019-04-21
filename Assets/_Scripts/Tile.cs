@@ -21,7 +21,7 @@ public class Tile : MonoBehaviour {
     public void SetLetter(Letter l) {
         letter = l;
         image.sprite = l.image;
-        letterDisplay.text = letter.name;
+        //letterDisplay.text = letter.name;
     }
 
     public void SetPos(Vector2Int p) {
