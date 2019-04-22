@@ -103,7 +103,11 @@ public class SubmitMode : MonoBehaviour, InputMode {
             }
             StartCoroutine(tile.ChangeLetter(l, scaleSpeed, rotSpeed));
         }
+        Audio.PlaySound("success");
         Submit(word);
+        if(board.AmountLocked()==0){
+            board.LockRandomTile();
+        }
     }
 
     public bool CanExit() {
@@ -113,7 +117,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
     public void OnHover(Tile t) {
         Word word = GetLongestWordHorizontal(t);
         ClearRings();
-        if (word != null && t.moveable) {
+        if (word != null) {
             foreach (Tile tile in word.letters) {
                 MakeRing(tile.transform.position);
             }

@@ -68,11 +68,9 @@ public class RotateMode : MonoBehaviour, InputMode {
 
         if (t.pos.x >= board.width - 1) {
             t = board.Get(t.pos, -1, 0);
-            Debug.Log("Changed x");
         }
         if (t.pos.y >= board.height - 1) {
             t = board.Get(t.pos, 0, -1);
-            Debug.Log("Changed y");
         }
 
         Rotate(t);
@@ -88,7 +86,10 @@ public class RotateMode : MonoBehaviour, InputMode {
         Tile ne = board.Get(t.pos, 1, 1);
         Tile se = board.Get(t.pos, 1, 0);
         if (t.moveable && nw.moveable && ne.moveable && se.moveable) {
+            Audio.PlaySound("rotate", volume : 1);
             RotatePieces(t, nw, ne, se);
+        } else {
+            Audio.PlaySound("locked");
         }
     }
 

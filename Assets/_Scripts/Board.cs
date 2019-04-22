@@ -139,4 +139,12 @@ public class Board : MonoBehaviour {
         return tiles.Where(x=>IsVowel(x.letter)).Count();
     }
 
+    public int AmountLocked(){
+        return tiles.Where(x=>!x.moveable).Count();
+    }
+
+    public void LockRandomTile(){
+        tiles.RandomItem(x=>x.moveable).Lock();
+    }
+
 }
