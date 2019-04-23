@@ -15,6 +15,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
 
     public static event Action<Word> Submit;
     [SerializeField] Board board;
+    [SerializeField] GameManager gameManager;
     [SerializeField] float scaleSpeed;
     [SerializeField] float rotSpeed;
 
@@ -97,6 +98,9 @@ public class SubmitMode : MonoBehaviour, InputMode {
 
     public void SubmitWord(Word word) {
         foreach (Tile tile in word.letters) {
+            if (tile.powerUp == "freeze") {
+                gameManager.freezeTime();
+            }
             Letter l = board.RandomLetter();
             if (board.CurrentVowels() < 4) {
                 l = board.RandomVowel();
