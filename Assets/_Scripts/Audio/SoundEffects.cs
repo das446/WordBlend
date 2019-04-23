@@ -23,7 +23,6 @@ public class SoundEffects : MonoBehaviour {
             soundEffects = new List<Sound>();
         }
         if (HasSound(Sound)) {
-            Debug.Log("has sound "+Sound);
             Sound s = soundEffects.Where(x => x.name == Sound).First();
             Music.PlaySound(s, volume);
             Music.Source.pitch = 1;

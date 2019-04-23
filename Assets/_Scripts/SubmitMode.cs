@@ -18,6 +18,10 @@ public class SubmitMode : MonoBehaviour, InputMode {
     [SerializeField] GameManager gameManager;
     [SerializeField] float scaleSpeed;
     [SerializeField] float rotSpeed;
+    bool horizontal = true;
+     
+
+    public static bool canExit=true;
 
     public void Enter() {
         //submitButton.gameObject.SetActive(true);
@@ -40,10 +44,18 @@ public class SubmitMode : MonoBehaviour, InputMode {
     }
 
     public void OnClick(Tile t) {
-        Word word = GetLongestWordHorizontal(t);
+        Word word = GetLongestWord(t, horizontal);
 
         if (word != null) {
             SubmitWord(word);
+        }
+    }
+
+    Word GetLongestWord(Tile t, bool horizontal) {
+        if (horizontal) {
+            return GetLongestWordHorizontal(t);
+        } else {
+            return GetLongestWordVertical(t);
         }
     }
 
@@ -56,6 +68,33 @@ public class SubmitMode : MonoBehaviour, InputMode {
         while (x < board.width) {
             tiles.Add(board.Get(x, t.pos.y));
             x++;
+        }
+
+        Word word = new Word(tiles);
+
+        while (word.Length() > 2 && !valid) {
+            valid = WordChecker.CheckWord(word);
+            if (!valid) {
+                word = word.RemoveLast();
+            }
+        }
+
+        if (valid) {
+            return word;
+        } else {
+            return null;
+        }
+    }
+
+    private Word GetLongestWordVertical(Tile t) {
+        bool valid = false;
+
+        int y = t.pos.y;
+        List<Tile> tiles = new List<Tile>();
+
+        while (y > 0) {
+            tiles.Add(board.Get(t.pos.x, y));
+            y--;
         }
 
         Word word = new Word(tiles);
@@ -97,10 +136,9 @@ public class SubmitMode : MonoBehaviour, InputMode {
     }
 
     public void SubmitWord(Word word) {
+        canExit = false;
         foreach (Tile tile in word.letters) {
-            if (tile.powerUp == "freeze") {
-                gameManager.freezeTime();
-            }
+            tile.powerUp?.Submit(tile);
             Letter l = board.RandomLetter();
             if (board.CurrentVowels() < 4) {
                 l = board.RandomVowel();
@@ -109,17 +147,17 @@ public class SubmitMode : MonoBehaviour, InputMode {
         }
         Audio.PlaySound("success");
         Submit(word);
-        if(board.AmountLocked()==0){
+        if (board.AmountLocked() == 0) {
             board.LockRandomTile();
         }
     }
 
     public bool CanExit() {
-        return true;
+        return canExit;
     }
 
     public void OnHover(Tile t) {
-        Word word = GetLongestWordHorizontal(t);
+        Word word = GetLongestWord(t, horizontal);
         ClearRings();
         if (word != null) {
             foreach (Tile tile in word.letters) {
@@ -134,4 +172,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
         }
     }
 
+    public void Change() {
+        horizontal = !horizontal;
+    }
 }

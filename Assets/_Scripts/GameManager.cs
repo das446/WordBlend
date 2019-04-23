@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public float maxFreezeTime;
     public int lockedTileCount;
     private float currTime;
-    private float currFreezeTime;
+    private float curFreezeTime;
     private Image timeBarImage;
     int points;
     [SerializeField] int[] pointVals;
@@ -18,29 +18,29 @@ public class GameManager : MonoBehaviour {
     private void GetPoints(Word word) {
         points += pointVals[word.Length()];
         text.text = "Score: " + points;
-
-        if (currTime + word.Length() * 4 > maxTime)
+        currTime += word.Length() * 4;
+        if (currTime > maxTime) {
             currTime = maxTime;
-        else
-            currTime += (word.Length() * 4);
+        }
     }
 
     void Start() {
         currTime = maxTime;
-        currFreezeTime = 0f;
+        curFreezeTime = 0f;
         SubmitMode.Submit += GetPoints;
         timeBarImage = TimeBar.GetComponent<Image>();
+        FreezePowerUp.FreezeTimer+=FreezeTimer;
     }
 
     void Update() {
 
-        if (currFreezeTime > 0f) {
-            currFreezeTime -= Time.deltaTime;
-        }
-        else {
-            if (timeBarImage.color == Color.cyan)
+        if (curFreezeTime > 0f) {
+            curFreezeTime -= Time.deltaTime;
+        } else {
+            if (timeBarImage.color == Color.cyan) {
                 timeBarImage.color = Color.red;
-            currFreezeTime = 0f;
+            }
+            curFreezeTime = 0f;
 
             if (currTime > 0f)
                 currTime -= Time.deltaTime;
@@ -53,8 +53,8 @@ public class GameManager : MonoBehaviour {
         TimeBar.transform.localScale = new Vector3(1f, currTime / maxTime, 1f);
     }
 
-    public void freezeTime() {
+    public void FreezeTimer(int amnt) {
         timeBarImage.color = Color.cyan;
-        currFreezeTime = maxFreezeTime;
+        curFreezeTime = maxFreezeTime;
     }
 }

@@ -11,4 +11,5 @@ public interface InputMode
    void Enter();
    void Exit();
    bool CanExit();
+   void Change();
 }

@@ -108,7 +108,7 @@ public class Board : MonoBehaviour {
         }
     }
 
-    public Letter RandomLetter() {
+    public Letter RandomLetterWeighted() {
         int max = WordChecker.freq;
         int r = UnityEngine.Random.Range(0, max);
         int i = 0;
@@ -125,26 +125,28 @@ public class Board : MonoBehaviour {
 
     }
 
-    public Letter RandomVowel()
-    {
+    public Letter RandomLetter(){
+        return letters.RandomItem();
+    }
+
+    public Letter RandomVowel() {
         return letters.RandomItem(IsVowel);
     }
 
-    private static bool IsVowel(Letter x)
-    {
+    private static bool IsVowel(Letter x) {
         return x.name == "A" || x.name == "E" || x.name == "I" || x.name == "O" || x.name == "U";
     }
 
-    public int CurrentVowels(){
-        return tiles.Where(x=>IsVowel(x.letter)).Count();
+    public int CurrentVowels() {
+        return tiles.Where(x => IsVowel(x.letter)).Count();
     }
 
-    public int AmountLocked(){
-        return tiles.Where(x=>!x.moveable).Count();
+    public int AmountLocked() {
+        return tiles.Where(x => !x.moveable).Count();
     }
 
-    public void LockRandomTile(){
-        tiles.RandomItem(x=>x.moveable).Lock();
+    public void LockRandomTile() {
+        tiles.RandomItem(x => x.moveable).Lock();
     }
 
 }

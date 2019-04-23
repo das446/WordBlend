@@ -12,9 +12,11 @@ public class Tile : MonoBehaviour {
     [SerializeField] SpriteRenderer background;
     [SerializeField] TextMeshPro tmp;
     [SerializeField] public bool moveable;
-    [SerializeField] public string powerUp = "default";
+    public PowerUp powerUp;
     static List<Tile> objectPool = new List<Tile>();
     [SerializeField] float min;
+    [SerializeField] List<PowerUp> possiblePowerups;
+    [SerializeField] int powerupChance;
 
     public static event Action<Tile> OnClick;
     public static event Action<Tile> OnHover;
@@ -58,7 +60,7 @@ public class Tile : MonoBehaviour {
         t.gameObject.SetActive(true);
         t.SetPos(pos);
         t.SetLetter(letter);
-        t.powerUp = "default";
+        t.powerUp = null;
         return t;
 
     }
@@ -90,16 +92,17 @@ public class Tile : MonoBehaviour {
         }
         transform.rotation = Quaternion.identity;
         transform.localScale = new Vector3(x, x, 1);
+        SubmitMode.canExit = true;
     }
 
     public void RandomAttribute() {
         if (UnityEngine.Random.Range(0, 10) == 0) {
             Lock();
-        }
-        else if (UnityEngine.Random.Range(0, 100) <= 5) {
-            FreezeTile();
-        }
-        else {
+        } else if (UnityEngine.Random.Range(0, 100) <= powerupChance) {
+            powerUp = possiblePowerups.RandomItem();
+            powerUp.Init(this);
+            Debug.Log(powerUp);
+        } else {
             Unlock();
         }
     }
@@ -112,21 +115,20 @@ public class Tile : MonoBehaviour {
         moveable = false;
         background.color = Color.black;
         background.enabled = true;
-        powerUp = "default";
+        powerUp = null;
     }
 
     public void FreezeTile() {
         moveable = true;
         background.color = Color.cyan;
         background.enabled = true;
-        powerUp = "freeze";
+        powerUp = possiblePowerups.Where(x => x.name == "freeze").First();
     }
 
     public void Unlock() {
         moveable = true;
         background.color = Color.white;
         background.enabled = false;
-        powerUp = "default";
     }
 
 }

@@ -16,9 +16,6 @@ public class RotateMode : MonoBehaviour, InputMode {
 
     void Update() {
         if (!active) { return; }
-        if (Input.GetKeyDown(KeyCode.R)) {
-            clockWise = !clockWise;
-        }
 
         RotateGrad();
 
@@ -165,4 +162,9 @@ public class RotateMode : MonoBehaviour, InputMode {
     }
 
     public void OnHover(Tile t) { }
+
+    public void Change()
+    {
+        clockWise = !clockWise;
+    }
 }
