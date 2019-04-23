@@ -12,6 +12,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] SpriteRenderer background;
     [SerializeField] TextMeshPro tmp;
     [SerializeField] public bool moveable;
+    [SerializeField] public string powerUp = "default";
     static List<Tile> objectPool = new List<Tile>();
     [SerializeField] float min;
 
@@ -57,6 +58,7 @@ public class Tile : MonoBehaviour {
         t.gameObject.SetActive(true);
         t.SetPos(pos);
         t.SetLetter(letter);
+        t.powerUp = "default";
         return t;
 
     }
@@ -76,7 +78,7 @@ public class Tile : MonoBehaviour {
         }
         SetLetter(l);
         if (moveable) {
-            RandomLock();
+            RandomAttribute();
         } else {
             Unlock();
         }
@@ -90,9 +92,15 @@ public class Tile : MonoBehaviour {
         transform.localScale = new Vector3(x, x, 1);
     }
 
-    public void RandomLock() {
+    public void RandomAttribute() {
         if (UnityEngine.Random.Range(0, 10) == 0) {
             Lock();
+        }
+        else if (UnityEngine.Random.Range(0, 100) <= 5) {
+            FreezeTile();
+        }
+        else {
+            Unlock();
         }
     }
 
@@ -102,15 +110,23 @@ public class Tile : MonoBehaviour {
 
     public void Lock() {
         moveable = false;
+        background.color = Color.black;
         background.enabled = true;
-        //tmp.color = Color.white;
+        powerUp = "default";
+    }
+
+    public void FreezeTile() {
+        moveable = true;
+        background.color = Color.cyan;
+        background.enabled = true;
+        powerUp = "freeze";
     }
 
     public void Unlock() {
         moveable = true;
+        background.color = Color.white;
         background.enabled = false;
-        //tmp.color = Color.black;
-
+        powerUp = "default";
     }
 
 }

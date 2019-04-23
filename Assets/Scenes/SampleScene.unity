@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -222,6 +222,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTime: 60
   TimeBar: {fileID: 843851668}
+  maxFreezeTime: 5
+  lockedTileCount: 0
   pointVals: 000000000000000000000000640000002c01000020030000e8030000
   text: {fileID: 1992380639}
 --- !u!4 &133114043
@@ -836,6 +838,7 @@ MonoBehaviour:
   submitButton: {fileID: 674874065}
   ring: {fileID: 8806784059710026117, guid: 20f2a7e0e7550b2479a6f4427a59e593, type: 3}
   board: {fileID: 1037970529}
+  gameManager: {fileID: 133114042}
   scaleSpeed: 1.5
   rotSpeed: 9.945
 --- !u!4 &588012532
