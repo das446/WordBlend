@@ -142,7 +142,7 @@ public class RotateMode : MonoBehaviour, InputMode {
             t.transform.position = Vector3.Lerp(t.transform.position, target, Time.deltaTime * tileRotSpeed);
             yield return new WaitForEndOfFrame();
         }
-        t.image.sortingOrder = board.height - (int) target.y;
+        t.image.sortingOrder = (int) target.y;
         t.transform.position = target;
         canRotate = true;
     }

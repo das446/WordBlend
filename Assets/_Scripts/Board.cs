@@ -22,7 +22,7 @@ public class Board : MonoBehaviour {
                 Tile t = baseTile.Create(new Vector2Int(x, y), l);
                 tiles.Add(t);
                 t.transform.parent = transform;
-                t.image.sortingOrder = height-y;
+                t.image.sortingOrder = y;
             }
         }
 
