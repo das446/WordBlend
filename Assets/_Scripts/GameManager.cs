@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour {
         float scale = currTime / maxTime;
         scale = scale > 1 ? 1 : scale;
         TimeBar.transform.localScale = new Vector3(1f, currTime / maxTime, 1f);
+
+        if (Input.GetKey("escape"))
+            Application.Quit(); 
     }
 
     public void FreezeTimer(int amnt) {

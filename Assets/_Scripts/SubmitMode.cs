@@ -19,6 +19,9 @@ public class SubmitMode : MonoBehaviour, InputMode {
     [SerializeField] float scaleSpeed;
     [SerializeField] float rotSpeed;
     bool horizontal = true;
+
+    public GameObject horizontalArrows;
+    public GameObject verticalArrows;
      
 
     public static bool canExit=true;
@@ -174,5 +177,15 @@ public class SubmitMode : MonoBehaviour, InputMode {
 
     public void Change() {
         horizontal = !horizontal;
+        if (horizontal)
+        {
+            horizontalArrows.SetActive(true);
+            verticalArrows.SetActive(false);
+        }
+        else
+        {
+            horizontalArrows.SetActive(false);
+            verticalArrows.SetActive(true);
+        }
     }
 }

@@ -35,7 +35,7 @@ public class InputController : MonoBehaviour {
             SwitchMode();
         }
 
-        if (Input.GetKeyDown(KeyCode.Z)) {
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
             curMode.Change();
         }
     }
