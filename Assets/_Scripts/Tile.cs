@@ -46,7 +46,7 @@ public class Tile : MonoBehaviour {
     }
 
     public void OnMouseOver() {
-        OnHover(this);
+        if (OnHover != null) { OnHover(this); }
     }
 
     public Tile Create(Vector2Int pos, Letter letter) {

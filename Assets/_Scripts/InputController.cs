@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TouchScript;
+using TouchScript.Gestures;
+using TouchScript.Gestures.TransformGestures;
 using UnityEngine;
 
 public class InputController : MonoBehaviour {
@@ -11,10 +14,35 @@ public class InputController : MonoBehaviour {
     [SerializeField] SubmitMode submitMode;
     [SerializeField] Board board;
 
+    [SerializeField] TapGesture singleTap;
+    [SerializeField] TapGesture doubleTap;
+    [SerializeField] TransformGesture drag;
+
     void Start() {
-        curMode = rotateMode;
-        Tile.OnClick += OnTileClick;
-        Tile.OnHover += OnTileHover;
+        // curMode = rotateMode;
+        // Tile.OnClick += OnTileClick;
+        // Tile.OnHover += OnTileHover;
+        drag.TransformStarted += OnDrag;
+        drag.Transformed += OnDrag;
+        drag.TransformCompleted += OnDrag;
+
+        singleTap.Tapped += OnSingleTap;
+        doubleTap.Tapped += OnDoubleTap;
+
+    }
+
+    private void OnSingleTap(object sender, EventArgs e) {
+        rotateMode.OnClick(board);
+        Debug.Log("Tap");
+    }
+
+    private void OnDoubleTap(object sender, EventArgs e) {
+        submitMode.OnClick(OriginTile());
+        Debug.Log("Double Tap");
+    }
+
+    private void OnDrag(object sender, EventArgs e) {
+        rotateMode.MoveCircle();
 
     }
 
@@ -26,18 +54,8 @@ public class InputController : MonoBehaviour {
         curMode.OnClick(tile);
     }
 
-    void Update() {
-        if (Input.GetMouseButtonDown(0)) {
-            Vector2 mousePos = GetMousePos();
-            curMode.OnClick(mousePos);
-
-        } else if (Input.GetKeyDown(KeyCode.Space) && curMode.CanExit()) {
-            SwitchMode();
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            curMode.Change();
-        }
+    Tile OriginTile() {
+        return rotateMode.OriginTile();
     }
 
     private void SwitchMode() {

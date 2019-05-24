@@ -19,7 +19,7 @@ public class RotateMode : MonoBehaviour, InputMode {
 
         RotateGrad();
 
-        MoveCircle();
+        //MoveCircle();
 
     }
 
@@ -28,7 +28,7 @@ public class RotateMode : MonoBehaviour, InputMode {
         gradient.transform.Rotate(0, 0, gradRotSpeed * c * Time.deltaTime);
     }
 
-    private void MoveCircle() {
+    public void MoveCircle() {
         Vector2 mouse = Input.mousePosition;
         mouse = Camera.main.ScreenToWorldPoint(mouse);
         float x = Mathf.Round(mouse.x) + 0.5f;
@@ -49,6 +49,20 @@ public class RotateMode : MonoBehaviour, InputMode {
         Vector2 mouseRounded = new Vector2(x, y);
 
         ring.transform.position = mouseRounded;
+    }
+
+    public void OnClick(Board b)
+    {
+        Tile t = OriginTile();
+        OnClick(t);
+    }
+
+    public Tile OriginTile()
+    {
+        int x = (int)(transform.position.x - 0.5f);
+        int y = (int)(transform.position.y - 0.5f);
+        Tile t = board.Get(x, y);
+        return t;
     }
 
     public void OnClick() {
@@ -163,8 +177,7 @@ public class RotateMode : MonoBehaviour, InputMode {
 
     public void OnHover(Tile t) { }
 
-    public void Change()
-    {
+    public void Change() {
         clockWise = !clockWise;
     }
 }
