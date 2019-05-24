@@ -221,10 +221,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxTime: 60
-  TimeBar: {fileID: 843851668}
+  TimeBar: {fileID: 843851669}
   maxFreezeTime: 5
   lockedTileCount: 0
-  pointVals: 000000000000000000000000640000002c01000020030000e8030000
+  pointVals: 000000000000000000000000640000002c01000020030000e8030000d0070000b80b0000a00f00008813000070170000581b0000401f00002823000010270000f82a0000e02e0000c8320000b0360000983a0000803e00006842000050460000
   text: {fileID: 1992380639}
 --- !u!4 &133114043
 Transform:
@@ -720,7 +720,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.41, y: 3, z: -10}
+  m_LocalPosition: {x: 2.41, y: 4, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4264990617156861525}
@@ -1000,7 +1000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a878a6ff128243dfb1d89ca0273f059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
   OnStateChange:
     m_PersistentCalls:
       m_Calls: []
@@ -1041,7 +1040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a878a6ff128243dfb1d89ca0273f059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
   OnStateChange:
     m_PersistentCalls:
       m_Calls: []
@@ -1066,7 +1064,7 @@ MonoBehaviour:
     m_TypeName: TouchScript.Gestures.Gesture+GestureEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   numberOfTapsRequired: 2
-  timeLimit: 0.5
+  timeLimit: 0.3
   distanceLimit: Infinity
   combinePointers: 0
   combinePointersInterval: 0.3
@@ -1459,7 +1457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiles: []
   width: 6
-  height: 7
+  height: 8
   baseTile: {fileID: 215184264}
   letters:
   - {fileID: 11400000, guid: c7bcc33826d938a4eb5bcd99663272a2, type: 2}
@@ -1536,7 +1534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   file: words.txt
   min: 3
-  max: 6
+  max: 8
 --- !u!114 &1037970533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1743,8 +1741,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698384971}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 2.2941258, z: 1}
+  m_LocalPosition: {x: 3, y: 4.164, z: 0}
+  m_LocalScale: {x: 1, y: 2.2022073, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
@@ -2311,6 +2309,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3691662298174260988, guid: 71cacd889defd9546aee77a1da79f8e6,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71cacd889defd9546aee77a1da79f8e6, type: 3}

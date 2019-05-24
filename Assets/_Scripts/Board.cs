@@ -18,7 +18,7 @@ public class Board : MonoBehaviour {
     void Start() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Letter l = RandomLetter();
+                Letter l = RandomLetterWeighted();
                 Tile t = baseTile.Create(new Vector2Int(x, y), l);
                 tiles.Add(t);
                 t.transform.parent = transform;

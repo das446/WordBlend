@@ -37,6 +37,7 @@ public class InputController : MonoBehaviour {
     }
 
     private void OnDoubleTap(object sender, EventArgs e) {
+        
         submitMode.OnClick(OriginTile());
         Debug.Log("Double Tap");
     }

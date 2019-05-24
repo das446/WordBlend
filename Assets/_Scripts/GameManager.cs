@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
     public float maxTime;
-    public GameObject TimeBar;
+    public Image TimeBar;
     public float maxFreezeTime;
     public int lockedTileCount;
     private float currTime;
@@ -15,10 +15,10 @@ public class GameManager : MonoBehaviour {
     [SerializeField] int[] pointVals;
     [SerializeField] Text text;
 
-    private void GetPoints(Word word) {
-        points += pointVals[word.Length()];
+    private void GetPoints(int amnt) {
+        points += pointVals[amnt];
         text.text = "Score: " + points;
-        currTime += word.Length() * 4;
+        currTime += amnt * 4;
         if (currTime > maxTime) {
             currTime = maxTime;
         }
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
         curFreezeTime = 0f;
         SubmitMode.Submit += GetPoints;
         timeBarImage = TimeBar.GetComponent<Image>();
-        FreezePowerUp.FreezeTimer+=FreezeTimer;
+        FreezePowerUp.FreezeTimer += FreezeTimer;
     }
 
     void Update() {
@@ -48,12 +48,11 @@ public class GameManager : MonoBehaviour {
                 currTime = 0f;
             }
         }
-        float scale = currTime / maxTime;
-        scale = scale > 1 ? 1 : scale;
-        TimeBar.transform.localScale = new Vector3(1f, currTime / maxTime, 1f);
+        float fill = currTime / maxTime;
+        TimeBar.fillAmount = fill;
 
         if (Input.GetKey("escape"))
-            Application.Quit(); 
+            Application.Quit();
     }
 
     public void FreezeTimer(int amnt) {
