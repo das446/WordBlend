@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class WordChecker : MonoBehaviour {
     static List<string> words = new List<string>();
@@ -11,16 +12,31 @@ public class WordChecker : MonoBehaviour {
     public static Dictionary<string, int> letterFrequency = new Dictionary<string, int>();
     public static int freq;
     void Start() {
-        LoadWordsFromFile(Application.streamingAssetsPath + "/" + file);
-        SetLetterFrequencies();
+        string f = Application.streamingAssetsPath + "/" + file;
+        if (Application.platform == RuntimePlatform.Android) {
+            GetAndroidPath();
+        } else {
+            string[] w = System.IO.File.ReadAllLines(file);
+            LoadWordsFromFile(w);
+            SetLetterFrequencies();
+
+        }
     }
 
-    private void LoadWordsFromFile(string file) {
-        string[] w = System.IO.File.ReadAllLines(file);
+    private IEnumerator GetAndroidPath() {
+        string filePath = "jar:file://" + Application.dataPath + "!/assets/" + file;
+        UnityWebRequest www = new UnityWebRequest(filePath);
+        yield return www.SendWebRequest();
+        //www.downloadHandler.text;
+
+    }
+
+    private void LoadWordsFromFile(string[] w) {
+        
         words = w.ToList();
         words = words.Where(x => x.Length >= min && x.Length <= max).ToList();
         //remove weird words that don't have vowels
-        words = words.Where(x => x.Contains('a')||x.Contains('e')||x.Contains('i')||x.Contains('o')||x.Contains('u')||x.Contains('y')).ToList();
+        words = words.Where(x => x.Contains('a') || x.Contains('e') || x.Contains('i') || x.Contains('o') || x.Contains('u') || x.Contains('y')).ToList();
 
     }
 
@@ -55,7 +71,7 @@ public class WordChecker : MonoBehaviour {
 
     }
 
-    private static int compare(string letter1, string letter2 ){
+    private static int compare(string letter1, string letter2) {
         return letterFrequency[letter1] > letterFrequency[letter2] ? 1 : 0;
     }
 }
