@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,8 +52,16 @@ public class GameManager : MonoBehaviour {
         float fill = currTime / maxTime;
         TimeBar.fillAmount = fill;
 
-        if (Input.GetKey("escape"))
-            Application.Quit();
+        if (Input.GetKey("escape")) { Application.Quit(); }
+        if (currTime <= 0) {
+            Lose();
+        }
+
+    }
+
+    private void Lose() {
+        PlayerPrefs.SetInt("Score", points);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
 
     public void FreezeTimer(int amnt) {

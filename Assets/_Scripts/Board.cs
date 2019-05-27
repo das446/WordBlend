@@ -14,11 +14,12 @@ public class Board : MonoBehaviour {
     [SerializeField] List<Letter> letters;
     [SerializeField] int lockedAmnt;
     [SerializeField] int minVowels;
+    [SerializeField] bool weightedRandom;
 
     void Start() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Letter l = RandomLetterWeighted();
+                Letter l = GetRandomLetter();
                 Tile t = baseTile.Create(new Vector2Int(x, y), l);
                 tiles.Add(t);
                 t.transform.parent = transform;
@@ -57,6 +58,14 @@ public class Board : MonoBehaviour {
             RotateClockwise(pivot);
         } else {
             RotateCounterClockwise(pivot);
+        }
+    }
+
+    public Letter GetRandomLetter() {
+        if (weightedRandom) {
+            return RandomLetterWeighted();
+        } else {
+            return RandomLetter();
         }
     }
 
@@ -125,7 +134,7 @@ public class Board : MonoBehaviour {
 
     }
 
-    public Letter RandomLetter(){
+    public Letter RandomLetter() {
         return letters.RandomItem();
     }
 
