@@ -15,7 +15,6 @@ public class TestTap : MonoBehaviour {
         float x = Mathf.Round(transform.position.x);
         float y = Mathf.Round(transform.position.y);
         transform.position = new Vector2(x, y);
-        Debug.Log("Move");
 
     }
 

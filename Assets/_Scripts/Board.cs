@@ -21,6 +21,7 @@ public class Board : MonoBehaviour {
             for (int y = 0; y < height; y++) {
                 Letter l = GetRandomLetter();
                 Tile t = baseTile.Create(new Vector2Int(x, y), l);
+                t.board=this;
                 tiles.Add(t);
                 t.transform.parent = transform;
                 t.image.sortingOrder = y;

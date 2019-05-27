@@ -55,12 +55,10 @@ public class SubmitMode : MonoBehaviour, InputMode {
         for (int i = 0; i < 4; i++) {
             Word word = GetLongestWordHorizontal(checkTiles[i]);
             if (word != null) {
-                Debug.Log(word.ToString());
                 validWordsTiles.AddRange(word.letters);
             }
             word = GetLongestWordVertical(checkTiles[i]);
             if (word != null) {
-                Debug.Log(word.ToString());
                 validWordsTiles.AddRange(word.letters);
             }
         }
@@ -159,6 +157,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
         int amnt = tiles.Count;
         canExit = false;
         foreach (Tile tile in tiles) {
+            tile.MakeParticles();
             tile.powerUp?.Submit(tile);
             Letter l = board.RandomLetterWeighted();
             if (board.CurrentVowels() < 4) {

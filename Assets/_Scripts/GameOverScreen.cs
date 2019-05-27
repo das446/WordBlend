@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour {
-    Text scoreText;
+    [SerializeField] Text scoreText;
     void Start() {
         int score = PlayerPrefs.GetInt("Score");
         scoreText.text = "Game Over.\nYour Score: " + score;

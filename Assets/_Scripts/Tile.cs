@@ -17,6 +17,9 @@ public class Tile : MonoBehaviour {
     [SerializeField] float min;
     [SerializeField] List<PowerUp> possiblePowerups;
     [SerializeField] int powerupChance;
+    [SerializeField] GameObject particles;
+
+    public Board board;
 
     public static event Action<Tile> OnClick;
     public static event Action<Tile> OnHover;
@@ -25,6 +28,10 @@ public class Tile : MonoBehaviour {
         letter = l;
         image.sprite = l.image;
         //letterDisplay.text = letter.name;
+    }
+
+    public void MakeParticles() {
+        Destroy(Instantiate(particles, transform.position, transform.rotation), 5);
     }
 
     public void SetPos(Vector2Int p) {
@@ -112,10 +119,28 @@ public class Tile : MonoBehaviour {
     }
 
     public void Lock() {
+        if (!CanLock(board)) { return; }
         moveable = false;
         background.color = Color.black;
         background.enabled = true;
         powerUp = null;
+    }
+
+    private bool CanLock(Board board) {
+        int x = pos.x;
+        int y = pos.y;
+        if (x == 0 || y == 0) {
+            if (!WordChecker.CheckPattern(s =>
+                    s[0].ToString() == letter.name
+                )) { return false; }
+        }
+        if (x == board.width - 1 || y == board.height - 1) {
+            if (!WordChecker.CheckPattern(s =>
+                    s.Last().ToString() == letter.name
+                )) { return false; }
+        }
+
+        return true;
     }
 
     public void FreezeTile() {

@@ -18,28 +18,39 @@ public class InputController : MonoBehaviour {
     [SerializeField] TapGesture doubleTap;
     [SerializeField] TransformGesture drag;
 
+    [SerializeField] TapGesture reverse;
+
     void Start() {
-        // curMode = rotateMode;
-        // Tile.OnClick += OnTileClick;
-        // Tile.OnHover += OnTileHover;
         drag.TransformStarted += OnDrag;
         drag.Transformed += OnDrag;
         drag.TransformCompleted += OnDrag;
 
         singleTap.Tapped += OnSingleTap;
         doubleTap.Tapped += OnDoubleTap;
+        reverse.Tapped += ReverseDirection;
+    }
 
+    void OnDisable() {
+        drag.TransformStarted -= OnDrag;
+        drag.Transformed -= OnDrag;
+        drag.TransformCompleted -= OnDrag;
+
+        singleTap.Tapped -= OnSingleTap;
+        doubleTap.Tapped -= OnDoubleTap;
+        reverse.Tapped -= ReverseDirection;
+    }
+
+    private void ReverseDirection(object sender, EventArgs e) {
+        rotateMode.Change();
     }
 
     private void OnSingleTap(object sender, EventArgs e) {
         rotateMode.OnClick(board);
-        Debug.Log("Tap");
     }
 
     private void OnDoubleTap(object sender, EventArgs e) {
-        
+
         submitMode.OnClick(OriginTile());
-        Debug.Log("Double Tap");
     }
 
     private void OnDrag(object sender, EventArgs e) {

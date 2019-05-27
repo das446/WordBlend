@@ -20,7 +20,7 @@ public class WordChecker : MonoBehaviour {
         words = w.ToList();
         words = words.Where(x => x.Length >= min && x.Length <= max).ToList();
         //remove weird words that don't have vowels
-        words = words.Where(x => x.Contains('a')||x.Contains('e')||x.Contains('i')||x.Contains('o')||x.Contains('u')||x.Contains('y')).ToList();
+        words = words.Where(x => x.Contains('a') || x.Contains('e') || x.Contains('i') || x.Contains('o') || x.Contains('u') || x.Contains('y')).ToList();
 
     }
 
@@ -28,8 +28,11 @@ public class WordChecker : MonoBehaviour {
         return words.Contains(word.ToString());
     }
 
+    public static bool CheckPattern(Func<string, bool> p) {
+        return words.Where(p).Count() > 0;
+    }
+
     static void SetLetterFrequencies() {
-        Debug.Log("Set frequencies");
         letterFrequency = new Dictionary<string, int>();
         freq = 0;
         List<string> letters = new List<string>();
@@ -49,13 +52,9 @@ public class WordChecker : MonoBehaviour {
 
         letters.Sort(compare);
 
-        for (int i = 0; i < letters.Count; i++) {
-            Debug.Log(letters[i] + "=" + letterFrequency[letters[i]]);
-        }
-
     }
 
-    private static int compare(string letter1, string letter2 ){
+    private static int compare(string letter1, string letter2) {
         return letterFrequency[letter1] > letterFrequency[letter2] ? 1 : 0;
     }
 }
