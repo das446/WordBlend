@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     public int lockedTileCount;
     private float currTime;
     private float curFreezeTime;
+
     private Image timeBarImage;
     [SerializeField] SpriteRenderer timerKnob;
 
@@ -46,6 +47,9 @@ public class GameManager : MonoBehaviour {
         } else {
             if (timerKnob.color == Color.cyan) {
                 timerKnob.color = defaultGrey;
+                Color c = Color.red;
+                c.a = 0.5f;
+                TimeBar.color = c;
             }
             curFreezeTime = 0f;
 
@@ -88,7 +92,9 @@ public class GameManager : MonoBehaviour {
 
     public void FreezeTimer(int amnt) {
         timerKnob.color = Color.cyan;
-        TimeBar.color = Color.cyan;
+        Color c = Color.cyan;
+        c.a = 0.5f;
+        TimeBar.color = c;
         curFreezeTime = maxFreezeTime;
     }
 }
