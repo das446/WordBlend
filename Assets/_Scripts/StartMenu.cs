@@ -6,5 +6,8 @@ public class StartMenu : MonoBehaviour {
     public void StartGame() {
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
+    public void Exit() {
+        Application.Quit();
+    }
 
 }
