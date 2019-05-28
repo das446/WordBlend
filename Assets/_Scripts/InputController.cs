@@ -80,7 +80,7 @@ public class InputController : MonoBehaviour {
 
     private void OnStartDrag(object sender, EventArgs e) {
 
-        ClearSubmitPreview()
+        ClearSubmitPreview();
     }
 
     private void OnDrag(object sender, EventArgs e) {
