@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1923,7 +1923,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: fae01523d3dd24a4394ad4c2c0717403, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eb587e4d0e3ebcd44b3925141c61f77c, type: 3}
   m_Color: {r: 0.7960785, g: 0.8000001, b: 0.7960785, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2322,8 +2322,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.6, y: -494.5}
-  m_SizeDelta: {x: 642.8, y: 240.5}
+  m_AnchoredPosition: {x: -3.6, y: -484.4}
+  m_SizeDelta: {x: 642.8, y: 273.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1758454034
 MonoBehaviour:
@@ -2475,8 +2475,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.6, y: -494.5}
-  m_SizeDelta: {x: 642.8, y: 240.5}
+  m_AnchoredPosition: {x: -3.6, y: -484.4}
+  m_SizeDelta: {x: 642.8, y: 273.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1853785457
 CanvasRenderer:
@@ -2499,7 +2499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.01900063, b: 0, a: 0.6627451}
+  m_Color: {r: 1, g: 0.01900063, b: 0, a: 0.5019608}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
