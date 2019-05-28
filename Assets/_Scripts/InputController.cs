@@ -36,7 +36,7 @@ public class InputController : MonoBehaviour {
     }
 
     void DeregisterEvents() {
-        drag.TransformStarted -= OnDrag;
+        drag.TransformStarted -= OnStartDrag;
         drag.Transformed -= OnDrag;
         drag.TransformCompleted -= OnStopDrag;
 
@@ -67,19 +67,20 @@ public class InputController : MonoBehaviour {
     }
 
     private void OnDoubleTap(object sender, EventArgs e) {
-
-        submitPreview = false;
-        submitPreviewTimer = 1;
-        submitMode.ClearRings();
+        ClearSubmitPreview();
         submitMode.OnClick(OriginTile());
 
     }
 
-    private void OnStartDrag(object sender, EventArgs e) {
-
+    private void ClearSubmitPreview() {
         submitPreview = false;
         submitPreviewTimer = 1;
         submitMode.ClearRings();
+    }
+
+    private void OnStartDrag(object sender, EventArgs e) {
+
+        ClearSubmitPreview()
     }
 
     private void OnDrag(object sender, EventArgs e) {
