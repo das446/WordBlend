@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Metaball_liquid
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - 
   - PostProcessing
   - Ring
-  - 
-  - 
+  - Glass
+  - Letters
   - 
   - 
   - 
@@ -40,4 +41,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Water
+    uniqueID: 2913923837
+    locked: 0
+  - name: Ring
+    uniqueID: 1420260635
+    locked: 0
+  - name: Letters
+    uniqueID: 1939174709
     locked: 0
