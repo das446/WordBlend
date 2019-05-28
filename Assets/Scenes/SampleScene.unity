@@ -1576,7 +1576,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4634d80be02fcd44f9e357f84723eccd, type: 2}
   lockedAmnt: 0
   minVowels: 3
-  weightedRandom: 1
+  weightedRandom: 0
 --- !u!4 &1037970530
 Transform:
   m_ObjectHideFlags: 0
