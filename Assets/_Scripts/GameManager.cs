@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("Score", points);
         SubmitMode.Submit -= GetPoints;
         FreezePowerUp.FreezeTimer -= FreezeTimer;
+        Tile.objectPool = new List<Tile>();
         DeregisterEvents();
         UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }

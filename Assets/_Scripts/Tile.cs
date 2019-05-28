@@ -13,7 +13,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] TextMeshPro tmp;
     [SerializeField] public bool moveable;
     public PowerUp powerUp;
-    static List<Tile> objectPool = new List<Tile>();
+    public static List<Tile> objectPool = new List<Tile>();
     [SerializeField] float min;
     [SerializeField] List<PowerUp> possiblePowerups;
     [SerializeField] int powerupChance;
@@ -57,6 +57,7 @@ public class Tile : MonoBehaviour {
     }
 
     public Tile Create(Vector2Int pos, Letter letter) {
+        if (objectPool == null) { objectPool = new List<Tile>(); }
         Tile t = objectPool.FirstOrDefault(x => x.gameObject.activeSelf == false);
         Vector3 v = new Vector3(pos.x, pos.y, 0);
         if (t == null) {
