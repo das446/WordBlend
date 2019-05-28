@@ -50,7 +50,7 @@ public class RotateMode : MonoBehaviour, InputMode {
         float vx = ring.transform.position.x;
         float vy = ring.transform.position.y;
         if (vx != x || vy != y) {
-            Audio.PlaySound("Move", volume : 0.25f);
+            Audio.PlaySound("Move", volume : 0.3f);
         }
         ring.transform.position = mouseRounded;
 

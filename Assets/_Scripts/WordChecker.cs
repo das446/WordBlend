@@ -18,6 +18,7 @@ public class WordChecker : MonoBehaviour {
     private void LoadWordsFromFile(string file) {
         string[] w = System.IO.File.ReadAllLines(file);
         words = w.ToList();
+        words=words.Select(s=> s.ToLower()).ToList();
         words = words.Where(x => x.Length >= min && x.Length <= max).ToList();
         //remove weird words that don't have vowels
         words = words.Where(x => x.Contains('a') || x.Contains('e') || x.Contains('i') || x.Contains('o') || x.Contains('u') || x.Contains('y')).ToList();

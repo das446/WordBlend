@@ -20,10 +20,13 @@ public class InputController : MonoBehaviour {
 
     [SerializeField] TapGesture reverse;
 
+    float submitPreviewTimer = 1;
+    bool submitPreview = false;
+
     void Start() {
-        drag.TransformStarted += OnDrag;
+        drag.TransformStarted += OnStartDrag;
         drag.Transformed += OnDrag;
-        drag.TransformCompleted += OnDrag;
+        drag.TransformCompleted += OnStopDrag;
 
         singleTap.Tapped += OnSingleTap;
         doubleTap.Tapped += OnDoubleTap;
@@ -35,7 +38,7 @@ public class InputController : MonoBehaviour {
     void DeregisterEvents() {
         drag.TransformStarted -= OnDrag;
         drag.Transformed -= OnDrag;
-        drag.TransformCompleted -= OnDrag;
+        drag.TransformCompleted -= OnStopDrag;
 
         singleTap.Tapped -= OnSingleTap;
         doubleTap.Tapped -= OnDoubleTap;
@@ -44,22 +47,48 @@ public class InputController : MonoBehaviour {
 
     }
 
+    void Update() {
+        if (submitPreview) {
+            submitPreviewTimer -= Time.deltaTime;
+            if (submitPreviewTimer <= 0) {
+                submitMode.PreviewSubmit(OriginTile());
+            }
+
+        }
+    }
+
     private void ReverseDirection(object sender, EventArgs e) {
         rotateMode.Change();
     }
 
     private void OnSingleTap(object sender, EventArgs e) {
+        submitMode.ClearRings();
         rotateMode.OnClick(board);
     }
 
     private void OnDoubleTap(object sender, EventArgs e) {
 
+        submitPreview = false;
+        submitPreviewTimer = 1;
+        submitMode.ClearRings();
         submitMode.OnClick(OriginTile());
+
+    }
+
+    private void OnStartDrag(object sender, EventArgs e) {
+
+        submitPreview = false;
+        submitPreviewTimer = 1;
+        submitMode.ClearRings();
     }
 
     private void OnDrag(object sender, EventArgs e) {
-        rotateMode.MoveCircle();
 
+        rotateMode.MoveCircle();
+    }
+
+    private void OnStopDrag(object sender, EventArgs e) {
+        submitPreview = true;
     }
 
     private void OnTileHover(Tile tile) {
@@ -88,6 +117,10 @@ public class InputController : MonoBehaviour {
         Vector2 mouse = Input.mousePosition;
         mouse = Camera.main.ScreenToWorldPoint(mouse);
         return mouse;
+    }
+
+    void ShowSubmitPreview() {
+
     }
 
 }

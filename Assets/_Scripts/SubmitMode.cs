@@ -46,6 +46,21 @@ public class SubmitMode : MonoBehaviour, InputMode {
     }
 
     public void OnClick(Tile t) {
+        List<Tile> validWordsTiles = GetValidTiles(t);
+        if (validWordsTiles.Count > 0) {
+            SubmitTiles(validWordsTiles);
+        }
+
+    }
+
+    public void PreviewSubmit(Tile t) {
+        List<Tile> tiles = GetValidTiles(t);
+        foreach (Tile tile in tiles) {
+            MakeRing(tile.transform.position);
+        }
+    }
+
+    private List<Tile> GetValidTiles(Tile t) {
         List<Tile> validWordsTiles = new List<Tile>();
         Tile sw = t;
         Tile nw = board.Get(t.pos.x, t.pos.y + 1);
@@ -63,10 +78,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
             }
         }
         validWordsTiles = validWordsTiles.Distinct().ToList();
-        if (validWordsTiles.Count > 0) {
-            SubmitTiles(validWordsTiles);
-        }
-
+        return validWordsTiles;
     }
 
     Word GetLongestWord(Tile t, bool horizontal) {
@@ -186,7 +198,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
         }
     }
 
-    private void ClearRings() {
+    public void ClearRings() {
         foreach (GameObject g in ringPool) {
             g.SetActive(false);
         }
