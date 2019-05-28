@@ -1922,7 +1922,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: fae01523d3dd24a4394ad4c2c0717403, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 0.7960785, g: 0.8000001, b: 0.7960785, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1930,7 +1930,7 @@ SpriteRenderer:
   m_Size: {x: 2.1699998, y: 2.1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1116234299
@@ -2286,6 +2286,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aafc7228972739c44aafa8b29f23a692, type: 2}
   - {fileID: 11400000, guid: dcff3bf200281d142bb28979face74cd, type: 2}
   - {fileID: 11400000, guid: ca31186ec43da4b45979a3784b5523ac, type: 2}
+  - {fileID: 11400000, guid: aa3fc3f987efea94da22efa4e4592d6d, type: 2}
   DefaultVolume: 1
 --- !u!1 &1758454032
 GameObject:
@@ -2321,8 +2322,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.6, y: -484.4}
-  m_SizeDelta: {x: 642.8, y: 273.4}
+  m_AnchoredPosition: {x: -3.6, y: -480.7}
+  m_SizeDelta: {x: 642.8, y: 266.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1758454034
 MonoBehaviour:
@@ -2474,8 +2475,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.6, y: -484.4}
-  m_SizeDelta: {x: 642.8, y: 273.4}
+  m_AnchoredPosition: {x: -3.6, y: -480.7}
+  m_SizeDelta: {x: 642.8, y: 266.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1853785457
 CanvasRenderer:

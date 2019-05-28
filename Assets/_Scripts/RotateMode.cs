@@ -47,20 +47,23 @@ public class RotateMode : MonoBehaviour, InputMode {
         }
 
         Vector2 mouseRounded = new Vector2(x, y);
-
+        float vx = ring.transform.position.x;
+        float vy = ring.transform.position.y;
+        if (vx != x || vy != y) {
+            Audio.PlaySound("Move", volume : 0.25f);
+        }
         ring.transform.position = mouseRounded;
+
     }
 
-    public void OnClick(Board b)
-    {
+    public void OnClick(Board b) {
         Tile t = OriginTile();
         OnClick(t);
     }
 
-    public Tile OriginTile()
-    {
-        int x = (int)(transform.position.x - 0.5f);
-        int y = (int)(transform.position.y - 0.5f);
+    public Tile OriginTile() {
+        int x = (int) (transform.position.x - 0.5f);
+        int y = (int) (transform.position.y - 0.5f);
         Tile t = board.Get(x, y);
         return t;
     }
