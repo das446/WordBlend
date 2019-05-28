@@ -24,7 +24,6 @@ public class Board : MonoBehaviour {
                 t.board=this;
                 tiles.Add(t);
                 t.transform.parent = transform;
-                t.image.sortingOrder = y;
             }
         }
 
