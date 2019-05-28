@@ -28,9 +28,11 @@ public class InputController : MonoBehaviour {
         singleTap.Tapped += OnSingleTap;
         doubleTap.Tapped += OnDoubleTap;
         reverse.Tapped += ReverseDirection;
+
+        GameManager.DeregisterEvents += DeregisterEvents;
     }
 
-    void OnDisable() {
+    void DeregisterEvents() {
         drag.TransformStarted -= OnDrag;
         drag.Transformed -= OnDrag;
         drag.TransformCompleted -= OnDrag;
@@ -38,6 +40,8 @@ public class InputController : MonoBehaviour {
         singleTap.Tapped -= OnSingleTap;
         doubleTap.Tapped -= OnDoubleTap;
         reverse.Tapped -= ReverseDirection;
+        GameManager.DeregisterEvents += DeregisterEvents;
+
     }
 
     private void ReverseDirection(object sender, EventArgs e) {

@@ -9,7 +9,7 @@ public class TileDebug : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        Tile.OnHover += UpdateDebug;
+        //Tile.OnHover += UpdateDebug;
     }
 
     // Update is called once per frame

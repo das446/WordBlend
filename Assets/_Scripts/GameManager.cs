@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
     [SerializeField] Text text;
     Color defaultGrey;
 
+    public static Action DeregisterEvents;
+
     private void GetPoints(int amnt) {
         points += pointVals[amnt];
         text.text = "Score: " + points;
@@ -77,6 +79,9 @@ public class GameManager : MonoBehaviour {
 
     private void Lose() {
         PlayerPrefs.SetInt("Score", points);
+        SubmitMode.Submit -= GetPoints;
+        FreezePowerUp.FreezeTimer -= FreezeTimer;
+        DeregisterEvents();
         UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
 
