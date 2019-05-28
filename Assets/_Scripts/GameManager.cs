@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour {
 
     public void FreezeTimer(int amnt) {
         timerKnob.color = Color.cyan;
+        TimeBar.color = Color.cyan;
         curFreezeTime = maxFreezeTime;
     }
 }
