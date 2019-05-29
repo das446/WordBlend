@@ -128,6 +128,7 @@ public class Tile : MonoBehaviour {
     }
 
     private bool CanLock(Board board) {
+        return true;
         int x = pos.x;
         int y = pos.y;
         if (x == 0 || y == 0) {

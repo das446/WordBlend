@@ -10,6 +10,13 @@ public class WordChecker : MonoBehaviour {
     [SerializeField] int min, max;
     public static Dictionary<string, int> letterFrequency = new Dictionary<string, int>();
     public static int freq;
+    static Node WordTrie;
+
+    struct Node {
+        public string letter;
+        public Dictionary<string, Node> children;
+    }
+
     void Start() {
         LoadWordsFromFile(Application.streamingAssetsPath + "/" + file);
         SetLetterFrequencies();
@@ -17,16 +24,66 @@ public class WordChecker : MonoBehaviour {
 
     private void LoadWordsFromFile(string file) {
         string[] w = System.IO.File.ReadAllLines(file);
+
         words = w.ToList();
-        words=words.Select(s=> s.ToLower()).ToList();
+        words = words.Select(s => s.ToLower()).ToList();
         words = words.Where(x => x.Length >= min && x.Length <= max).ToList();
         //remove weird words that don't have vowels
         words = words.Where(x => x.Contains('a') || x.Contains('e') || x.Contains('i') || x.Contains('o') || x.Contains('u') || x.Contains('y')).ToList();
+        WordTrie = MakeTrie(words.ToArray());
 
     }
 
+    Node MakeTrie(string[] words) {
+        Node head = new Node();
+        head.letter = "";
+        head.children = new Dictionary<string, Node>();
+        Node cur = head;
+        //string curTest = "";
+        foreach (string word in words) {
+            cur = head;
+            foreach (char letter in word) {
+                string l = letter.ToString();
+                if (cur.children.ContainsKey(l)) {
+                    cur = cur.children[l];
+                    //curTest += l + "_";
+                } else {
+                    Node newNode = new Node();
+                    newNode.letter = l;
+                    newNode.children = new Dictionary<string, Node>();
+                    cur.children.Add(l, newNode);
+                    cur = newNode;
+                    //curTest += l + "-";
+                }
+            }
+            //Debug.Log(curTest);
+            //curTest = "";
+        }
+        return head;
+    }
+
     public static bool CheckWord(Word word) {
-        return words.Contains(word.ToString());
+        string s = "";
+        foreach (Tile t in word.letters) {
+            s += t.letter.name;
+        }
+        return CheckWord(s);
+
+    }
+
+    public static bool CheckWord(string word) {
+        word = word.ToLower();
+        Node cur = WordTrie;
+        foreach (char letter in word) {
+            string l = letter.ToString();
+            //Debug.Log(l);
+            if (cur.children.ContainsKey(l)) {
+                cur = cur.children[l];
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static bool CheckPattern(Func<string, bool> p) {

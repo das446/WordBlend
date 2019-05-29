@@ -52,8 +52,13 @@ public class InputController : MonoBehaviour {
             submitPreviewTimer -= Time.deltaTime;
             if (submitPreviewTimer <= 0) {
                 submitMode.PreviewSubmit(OriginTile());
+                submitPreview=false;
             }
 
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            Debug.Log(WordChecker.CheckWord("penv"));
         }
     }
 

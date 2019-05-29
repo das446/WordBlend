@@ -1271,7 +1271,7 @@ MonoBehaviour:
     m_TypeName: TouchScript.Gestures.Gesture+GestureEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   numberOfTapsRequired: 2
-  timeLimit: 0.3
+  timeLimit: 0.4
   distanceLimit: Infinity
   combinePointers: 0
   combinePointersInterval: 0.3
@@ -2637,7 +2637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1919033744
 Transform:
   m_ObjectHideFlags: 0
