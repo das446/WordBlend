@@ -48,14 +48,6 @@ public class InputController : MonoBehaviour {
     }
 
     void Update() {
-        if (submitPreview) {
-            submitPreviewTimer -= Time.deltaTime;
-            if (submitPreviewTimer <= 0) {
-                submitMode.PreviewSubmit(OriginTile());
-                submitPreview=false;
-            }
-
-        }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
             Debug.Log(WordChecker.CheckWord("penv"));
@@ -94,7 +86,7 @@ public class InputController : MonoBehaviour {
     }
 
     private void OnStopDrag(object sender, EventArgs e) {
-        submitPreview = true;
+        submitMode.PreviewSubmit(OriginTile());
     }
 
     private void OnTileHover(Tile tile) {

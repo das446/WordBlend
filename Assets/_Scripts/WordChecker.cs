@@ -39,25 +39,21 @@ public class WordChecker : MonoBehaviour {
         head.letter = "";
         head.children = new Dictionary<string, Node>();
         Node cur = head;
-        //string curTest = "";
-        foreach (string word in words) {
+        for (int i = 0; i < words.Count(); i++) {
+            string word = words[i];
+            word += ".";
             cur = head;
             foreach (char letter in word) {
                 string l = letter.ToString();
-                if (cur.children.ContainsKey(l)) {
-                    cur = cur.children[l];
-                    //curTest += l + "_";
-                } else {
+                if (!cur.children.ContainsKey(l)) {
                     Node newNode = new Node();
                     newNode.letter = l;
                     newNode.children = new Dictionary<string, Node>();
                     cur.children.Add(l, newNode);
-                    cur = newNode;
-                    //curTest += l + "-";
+                } else {
+                    cur = cur.children[l];
                 }
             }
-            //Debug.Log(curTest);
-            //curTest = "";
         }
         return head;
     }
@@ -73,6 +69,7 @@ public class WordChecker : MonoBehaviour {
 
     public static bool CheckWord(string word) {
         word = word.ToLower();
+        word += ".";
         Node cur = WordTrie;
         foreach (char letter in word) {
             string l = letter.ToString();
