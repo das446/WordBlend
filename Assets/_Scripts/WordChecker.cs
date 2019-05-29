@@ -50,9 +50,9 @@ public class WordChecker : MonoBehaviour {
                     newNode.letter = l;
                     newNode.children = new Dictionary<string, Node>();
                     cur.children.Add(l, newNode);
-                } else {
-                    cur = cur.children[l];
                 }
+                cur = cur.children[l];
+
             }
         }
         return head;
