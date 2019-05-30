@@ -55,6 +55,7 @@ public class InputController : MonoBehaviour {
     }
 
     private void ReverseDirection(object sender, EventArgs e) {
+        Debug.Log("Reverse");
         rotateMode.Change();
     }
 
