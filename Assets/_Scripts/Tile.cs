@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour {
     public Vector2Int pos;
     public Letter letter;
     public SpriteRenderer image;
-    [SerializeField] SpriteRenderer background;
+    [SerializeField] SpriteRenderer background,background2;
     [SerializeField] TextMeshPro tmp;
     [SerializeField] public bool moveable;
     public PowerUp powerUp;
@@ -122,8 +122,9 @@ public class Tile : MonoBehaviour {
     public void Lock() {
         if (!CanLock(board)) { return; }
         moveable = false;
-        background.color = Color.black;
+        //background.color = Color.black;
         background.enabled = true;
+        background2.enabled = true;
         powerUp = null;
     }
 

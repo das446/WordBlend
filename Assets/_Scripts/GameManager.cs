@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour {
 
         float waterDisplace = (pointsToAdd / 1000.0f);
         // Start Water Lerp 
-        if (water.transform.position.y < 2)
+        if (water.transform.position.y < 2.5)
         {
             oldWaterPos = water.transform.position;
             newWaterPos = new Vector3(water.transform.position.x, water.transform.position.y + waterDisplace, water.transform.position.z);
