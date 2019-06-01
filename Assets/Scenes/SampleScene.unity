@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -313,6 +313,8 @@ MonoBehaviour:
   TimeBar: {fileID: 1853785458}
   maxFreezeTime: 5
   lockedTileCount: 0
+  water: {fileID: 1919033743}
+  waterMoveTime: 1
   timerKnob: {fileID: 1116234298}
   pointVals: 000000000000000000000000640000002c01000020030000e8030000d0070000b80b0000a00f00008813000070170000581b0000401f00002823000010270000f82a0000e02e0000c8320000b0360000983a0000803e00006842000050460000
   text: {fileID: 1992380639}

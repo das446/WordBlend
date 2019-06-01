@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour {
     public Image TimeBar;
     public float maxFreezeTime;
     public int lockedTileCount;
+    public GameObject water;
+    public float waterMoveTime;
+    private bool isWaterMoving;
+    private Vector3 newWaterPos, oldWaterPos;
+    private float waterLerpStart;
     private float currTime;
     private float curFreezeTime;
 
@@ -24,14 +29,26 @@ public class GameManager : MonoBehaviour {
 
     private void GetPoints(int amnt) {
         points += pointVals[amnt];
+        float pointsToAdd = pointVals[amnt];
         text.text = "Score: " + points;
         currTime += amnt * 4;
         if (currTime > maxTime) {
             currTime = maxTime;
         }
+
+        float waterDisplace = (pointsToAdd / 1000.0f);
+        // Start Water Lerp 
+        if (water.transform.position.y < 2)
+        {
+            oldWaterPos = water.transform.position;
+            newWaterPos = new Vector3(water.transform.position.x, water.transform.position.y + waterDisplace, water.transform.position.z);
+            waterLerpStart = Time.time;
+            isWaterMoving = true;
+        }
     }
 
     void Start() {
+        isWaterMoving = false;
         currTime = maxTime;
         curFreezeTime = 0f;
         SubmitMode.Submit += GetPoints;
@@ -65,6 +82,15 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKey("escape")) { Application.Quit(); }
         if (currTime <= 0) {
             Lose();
+        }
+
+        if (isWaterMoving)
+        {
+            float timeSinceStart = Time.time - waterLerpStart;
+            float lerpPercentTemp = timeSinceStart / waterMoveTime;
+            water.transform.position = Vector3.Lerp(oldWaterPos, newWaterPos, lerpPercentTemp);
+            if (lerpPercentTemp >= 1.0f)
+                isWaterMoving = false;
         }
 
     }
