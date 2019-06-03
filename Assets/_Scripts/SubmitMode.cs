@@ -27,6 +27,8 @@ public class SubmitMode : MonoBehaviour, InputMode {
     [SerializeField] bool drop;
     [SerializeField] float dropSpeed;
 
+    public static event Action Drop;
+
     public void Enter() {
         //submitButton.gameObject.SetActive(true);
         gameObject.SetActive(true);
@@ -124,7 +126,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
         int y = t.pos.y;
         List<Tile> tiles = new List<Tile>();
 
-        while (y > 0) {
+        while (y >= 0) {
             tiles.Add(board.Get(t.pos.x, y));
             y--;
         }
@@ -188,6 +190,7 @@ public class SubmitMode : MonoBehaviour, InputMode {
 
         List<Vector2Int> positions = tiles.Select(x => x.pos).ToList();
         Dictionary<int, int> heights = new Dictionary<int, int>();
+        Coroutine c = null;
         foreach (Vector2Int pos in positions) {
             if (!heights.ContainsKey(pos.x)) {
                 heights.Add(pos.x, 0);
@@ -205,10 +208,10 @@ public class SubmitMode : MonoBehaviour, InputMode {
             Tile tile = tiles[i];
             tile.MakeParticles();
             tile.powerUp?.Submit(tile);
-            Coroutine c = StartCoroutine(tile.SpinIn(scaleSpeed, rotSpeed));
+            c = StartCoroutine(tile.SpinIn(scaleSpeed, rotSpeed));
             if (i == tiles.Count - 1) {
                 yield return c;
-                Debug.Log("finish");
+
             }
         }
 
@@ -219,46 +222,38 @@ public class SubmitMode : MonoBehaviour, InputMode {
         List<Tile> tilesToMove = new List<Tile>();
         for (int x = 0; x < board.width; x++) {
             if (heights.ContainsKey(x)) {
-                DropColumn(x, heights[x]);
+                c = StartCoroutine(DropColumn(x, heights[x]));
             }
+
+            if (x == board.width) {
+                yield return c;
+            }
+
         }
+
+        if (Drop != null) { Drop(); }
 
     }
 
-    public void MoveTileDownOne(Tile t, int height, int toCreate) {
-        if (toCreate == 0) {
-            return;
-        }
-        Vector2Int newPos = t.pos;
-        Tile below = board.Get(newPos.x, newPos.y - 1);
-        if (below == null) {
-            return;
-        }
-
-        if (t.pos.y + height >= board.height) {
-            Tile up = board.CreateTile(new Vector2Int(newPos.x, newPos.y + 1));
-        } else {
-            Tile up = board.Get(newPos.x, newPos.y + 1);
-        }
-        newPos.y--;
-        t.Move(newPos, dropSpeed);
-
-    }
-
-    public void DropColumn(int col, int empty) {
+    public IEnumerator DropColumn(int col, int empty) {
         for (int y = 0; y < board.height + empty; y++) {
 
             Tile below = board.Get(col, y - 1);
             Tile t;
+            Coroutine c = null;
             if (y < board.height) {
                 t = board.Get(col, y);
                 if (t != Board.empty && t != Board.outOfBounds && (below == Board.empty)) {
-                    StartCoroutine(t.Move(new Vector2Int(col, y - empty), dropSpeed));
+                    c = StartCoroutine(t.Move(new Vector2Int(col, y - empty), dropSpeed));
                     //y--;
                 }
             } else {
                 t = board.CreateTile(new Vector2Int(col, y));
-                StartCoroutine(t.Move(new Vector2Int(col, y - empty), dropSpeed));
+                c = StartCoroutine(t.Move(new Vector2Int(col, y - empty), dropSpeed));
+            }
+
+            if (y == board.height + empty - 1) {
+                yield return c;
             }
 
         }

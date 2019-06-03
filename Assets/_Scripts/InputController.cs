@@ -32,7 +32,8 @@ public class InputController : MonoBehaviour {
         doubleTap.Tapped += OnDoubleTap;
         reverse.Tapped += ReverseDirection;
 
-        RotateMode.FinishRotate += submitMode.PreviewSubmit;
+        RotateMode.FinishRotate += ShowSubmitPreview;
+        SubmitMode.Submit += ClearSubmitPreview;
 
         GameManager.DeregisterEvents += DeregisterEvents;
     }
@@ -46,7 +47,8 @@ public class InputController : MonoBehaviour {
         doubleTap.Tapped -= OnDoubleTap;
         reverse.Tapped -= ReverseDirection;
 
-        RotateMode.FinishRotate -= submitMode.PreviewSubmit;
+        RotateMode.FinishRotate -= ShowSubmitPreview;
+        //SubmitMode.Drop -= ShowSubmitPreview;
 
         GameManager.DeregisterEvents -= DeregisterEvents;
 
@@ -79,6 +81,10 @@ public class InputController : MonoBehaviour {
         submitPreview = false;
         submitPreviewTimer = 1;
         submitMode.ClearRings();
+    }
+
+    private void ClearSubmitPreview(int i) {
+        ClearSubmitPreview();
     }
 
     private void OnStartDrag(object sender, EventArgs e) {
@@ -123,8 +129,8 @@ public class InputController : MonoBehaviour {
         return mouse;
     }
 
-    public void ShowSubmitPreview(Tile t) {
-        submitMode.PreviewSubmit(t);
+    public void ShowSubmitPreview() {
+        submitMode.PreviewSubmit(rotateMode.OriginTile());
     }
 
 }

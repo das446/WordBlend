@@ -21,8 +21,7 @@ public class Board : MonoBehaviour {
     void Start() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Letter l = GetRandomLetter();
-                CreateTile(new Vector2Int(x, y), l);
+                CreateTile(new Vector2Int(x, y));
             }
         }
 

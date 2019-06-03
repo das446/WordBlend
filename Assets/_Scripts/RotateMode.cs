@@ -14,7 +14,7 @@ public class RotateMode : MonoBehaviour, InputMode {
 
     bool canRotate = true;
 
-    public static event Action<Tile> FinishRotate;
+    public static event Action FinishRotate;
 
     void Update() {
         if (!active) { return; }
@@ -131,7 +131,7 @@ public class RotateMode : MonoBehaviour, InputMode {
         yield return (StartCoroutine(se.Move(seTarget, tileRotSpeed)));
 
         canRotate = true;
-        FinishRotate(OriginTile());
+        FinishRotate();
 
     }
 
@@ -150,7 +150,7 @@ public class RotateMode : MonoBehaviour, InputMode {
 
         canRotate = true;
 
-        FinishRotate(OriginTile());
+        FinishRotate();
 
     }
 

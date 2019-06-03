@@ -1075,7 +1075,7 @@ MonoBehaviour:
   horizontalArrows: {fileID: 0}
   verticalArrows: {fileID: 0}
   drop: 1
-  dropSpeed: 10
+  dropSpeed: 8
 --- !u!4 &588012532
 Transform:
   m_ObjectHideFlags: 0
