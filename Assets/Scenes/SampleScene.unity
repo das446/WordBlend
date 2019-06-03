@@ -589,6 +589,22 @@ PrefabInstance:
       propertyPath: m_BackSortingLayer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1170755699, guid: eb8c9bbb127a9f348b3d9681541c0697, type: 3}
+      propertyPath: m_Offset.y
+      value: 1.500771
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170755699, guid: eb8c9bbb127a9f348b3d9681541c0697, type: 3}
+      propertyPath: m_Size.y
+      value: 10.780988
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170755699, guid: eb8c9bbb127a9f348b3d9681541c0697, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.26693487
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170755699, guid: eb8c9bbb127a9f348b3d9681541c0697, type: 3}
+      propertyPath: m_Size.x
+      value: 11.185496
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb8c9bbb127a9f348b3d9681541c0697, type: 3}
 --- !u!1 &170076733
