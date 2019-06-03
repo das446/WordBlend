@@ -32,6 +32,8 @@ public class InputController : MonoBehaviour {
         doubleTap.Tapped += OnDoubleTap;
         reverse.Tapped += ReverseDirection;
 
+        RotateMode.FinishRotate += submitMode.PreviewSubmit;
+
         GameManager.DeregisterEvents += DeregisterEvents;
     }
 
@@ -43,7 +45,10 @@ public class InputController : MonoBehaviour {
         singleTap.Tapped -= OnSingleTap;
         doubleTap.Tapped -= OnDoubleTap;
         reverse.Tapped -= ReverseDirection;
-        GameManager.DeregisterEvents += DeregisterEvents;
+
+        RotateMode.FinishRotate -= submitMode.PreviewSubmit;
+
+        GameManager.DeregisterEvents -= DeregisterEvents;
 
     }
 
@@ -118,8 +123,8 @@ public class InputController : MonoBehaviour {
         return mouse;
     }
 
-    void ShowSubmitPreview() {
-
+    public void ShowSubmitPreview(Tile t) {
+        submitMode.PreviewSubmit(t);
     }
 
 }

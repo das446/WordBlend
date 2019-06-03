@@ -13,17 +13,16 @@ public class Board : MonoBehaviour {
     [SerializeField] Tile baseTile;
     [SerializeField] List<Letter> letters;
     [SerializeField] int lockedAmnt;
-    [SerializeField] int minVowels;
+    public int minVowels;
     [SerializeField] bool weightedRandom;
+    public static Tile outOfBounds;
+    public static Tile empty;
 
     void Start() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Letter l = GetRandomLetter();
-                Tile t = baseTile.Create(new Vector2Int(x, y), l);
-                t.board=this;
-                tiles.Add(t);
-                t.transform.parent = transform;
+                CreateTile(new Vector2Int(x, y), l);
             }
         }
 
@@ -31,15 +30,51 @@ public class Board : MonoBehaviour {
         foreach (Tile item in toLock) {
             item.Lock();
         }
+
+        empty = Instantiate(baseTile);
+        outOfBounds = Instantiate(baseTile);
+    }
+
+    public Tile CreateTile(Vector2Int vector2Int) {
+        Letter l = RandomLetterWeighted();
+        if (CurrentVowels() < minVowels) {
+            l = RandomVowel();
+        }
+        return CreateTile(vector2Int, l);
+    }
+
+    public Tile CreateTile(Vector2Int vector2Int, Letter l) {
+        Tile t = baseTile.Create(vector2Int, l);
+        t.board = this;
+        tiles.Add(t);
+        t.transform.parent = transform;
+        return t;
+    }
+
+    public void RemoveTile(Tile t) {
+        tiles.Remove(t);
+        t.DestroyTile();
     }
 
     public Tile Get(Vector2Int pos) {
-        CheckBounds(pos);
-        Tile tile = tiles.First(t => t.pos == pos && t.gameObject.activeSelf);
-        if (tile == null) {
-            throw new System.NullReferenceException("No tile at pos=" + pos);
+
+        if (pos.x >= width) {
+            return outOfBounds;
+        } else if (pos.x < 0) {
+            return outOfBounds;
+        } else if (pos.y >= height) {
+            return outOfBounds;
+        } else if (pos.y < 0) {
+            return outOfBounds;
         }
-        return tile;
+
+        try {
+            Tile tile = tiles.First(t => t.pos == pos && t.gameObject.activeSelf);
+            return tile;
+        } catch {
+            return empty;
+        }
+
     }
 
     /// <summary>
@@ -53,51 +88,11 @@ public class Board : MonoBehaviour {
         return Get(new Vector2Int(x, y));
     }
 
-    public void Rotate(Vector2Int pivot, bool clockwise) {
-        if (clockwise) {
-            RotateClockwise(pivot);
-        } else {
-            RotateCounterClockwise(pivot);
-        }
-    }
-
     public Letter GetRandomLetter() {
         if (weightedRandom) {
             return RandomLetterWeighted();
         } else {
             return RandomLetter();
-        }
-    }
-
-    public void RotateClockwise(Vector2Int pivot) {
-        Tile sw = Get(pivot);
-        Tile nw = Get(pivot, 0, 1);
-        Tile ne = Get(pivot, 1, 1);
-        Tile se = Get(pivot, 1, 0);
-
-        sw.Offset(0, 1);
-        nw.Offset(1, 0);
-        ne.Offset(0, -1);
-        se.Offset(-1, 0);
-
-        if (BoardChange != null) {
-            BoardChange(this);
-        }
-    }
-
-    public void RotateCounterClockwise(Vector2Int pivot) {
-        Tile sw = Get(pivot);
-        Tile nw = Get(pivot, 0, 1);
-        Tile ne = Get(pivot, 1, 1);
-        Tile se = Get(pivot, 1, 0);
-
-        sw.Offset(1, 0);
-        nw.Offset(0, -1);
-        ne.Offset(-1, 0);
-        se.Offset(0, 1);
-
-        if (BoardChange != null) {
-            BoardChange(this);
         }
     }
 

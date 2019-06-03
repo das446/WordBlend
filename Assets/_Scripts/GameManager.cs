@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour {
     public Image TimeBar;
     public float maxFreezeTime;
     public int lockedTileCount;
+    public GameObject water;
+    public float waterMoveTime;
+    private bool isWaterMoving;
+    private Vector3 newWaterPos, oldWaterPos;
+    private float waterLerpStart;
     private float currTime;
     private float curFreezeTime;
 
@@ -19,25 +24,38 @@ public class GameManager : MonoBehaviour {
     [SerializeField] int[] pointVals;
     [SerializeField] Text text;
     Color defaultGrey;
+    float waterAnimSpeed;
 
     public static Action DeregisterEvents;
 
     private void GetPoints(int amnt) {
         points += pointVals[amnt];
+        float pointsToAdd = pointVals[amnt];
         text.text = "Score: " + points;
         currTime += amnt * 4;
         if (currTime > maxTime) {
             currTime = maxTime;
         }
+
+        float waterDisplace = (pointsToAdd / 1000.0f);
+        // Start Water Lerp 
+        if (water.transform.position.y < 2.5) {
+            oldWaterPos = water.transform.position;
+            newWaterPos = new Vector3(water.transform.position.x, water.transform.position.y + waterDisplace, water.transform.position.z);
+            waterLerpStart = Time.time;
+            isWaterMoving = true;
+        }
     }
 
     void Start() {
+        isWaterMoving = false;
         currTime = maxTime;
         curFreezeTime = 0f;
         SubmitMode.Submit += GetPoints;
         timeBarImage = TimeBar.GetComponent<Image>();
         FreezePowerUp.FreezeTimer += FreezeTimer;
         defaultGrey = timerKnob.color;
+        waterAnimSpeed = water.gameObject.GetComponent<Animator>().speed;
     }
 
     void Update() {
@@ -50,6 +68,7 @@ public class GameManager : MonoBehaviour {
                 Color c = Color.red;
                 c.a = 0.5f;
                 TimeBar.color = c;
+                water.gameObject.GetComponent<Animator>().speed = waterAnimSpeed;
             }
             curFreezeTime = 0f;
 
@@ -65,6 +84,14 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKey("escape")) { Application.Quit(); }
         if (currTime <= 0) {
             Lose();
+        }
+
+        if (isWaterMoving) {
+            float timeSinceStart = Time.time - waterLerpStart;
+            float lerpPercentTemp = timeSinceStart / waterMoveTime;
+            water.transform.position = Vector3.Lerp(oldWaterPos, newWaterPos, lerpPercentTemp * 0.7f);
+            if (lerpPercentTemp >= 1.0f)
+                isWaterMoving = false;
         }
 
     }
@@ -96,5 +123,6 @@ public class GameManager : MonoBehaviour {
         c.a = 0.5f;
         TimeBar.color = c;
         curFreezeTime = maxFreezeTime;
+        water.gameObject.GetComponent<Animator>().speed = 0;
     }
 }

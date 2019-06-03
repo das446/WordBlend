@@ -45,9 +45,9 @@ TagManager:
   - name: Water
     uniqueID: 2913923837
     locked: 0
-  - name: Ring
-    uniqueID: 1420260635
-    locked: 0
   - name: Letters
     uniqueID: 1939174709
+    locked: 0
+  - name: Ring
+    uniqueID: 1420260635
     locked: 0

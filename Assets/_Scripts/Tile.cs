@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour {
     public Vector2Int pos;
     public Letter letter;
     public SpriteRenderer image;
-    [SerializeField] SpriteRenderer background;
+    [SerializeField] SpriteRenderer lockBackground, iceBackground;
     [SerializeField] TextMeshPro tmp;
     [SerializeField] public bool moveable;
     public PowerUp powerUp;
@@ -69,37 +69,72 @@ public class Tile : MonoBehaviour {
         t.SetPos(pos);
         t.SetLetter(letter);
         t.powerUp = null;
-        return t;
 
+        transform.rotation = Quaternion.identity;
+        transform.localScale = new Vector3(1, 1, 1);
+
+        return t;
+    }
+
+    public IEnumerator Move(Vector2Int target, float speed) {
+        pos = target;
+        Vector3 targetPos = new Vector3(target.x, target.y, 0);
+        while (Vector3.Distance(transform.position, targetPos) > 0.001f) {
+            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
+            yield return new WaitForEndOfFrame();
+        }
+        //t.image.sortingOrder = (int) target.y;
+        transform.position = targetPos;
+        
+
+    }
+
+    public void DestroyTile() {
+        objectPool.Remove(this);
+        Destroy(gameObject);
     }
 
     public void Clear() {
         gameObject.SetActive(false);
     }
 
-    public IEnumerator ChangeLetter(Letter l, float scaleSpeed, float rotSpeed) {
+    public IEnumerator ReplaceLetter(Letter l, float scaleSpeed, float rotSpeed) {
+
         float s = transform.localScale.x;
-        float x = s;
+        yield return StartCoroutine(SpinIn(scaleSpeed, rotSpeed));
+        SetLetter(l);
+        s = 0;
+
+        if (moveable) {
+            RandomAttribute();
+        } else {
+            Unlock();
+        }
+
+        StartCoroutine(SpinOut(scaleSpeed, rotSpeed));
+    }
+
+    public IEnumerator SpinIn(float scaleSpeed, float rotSpeed) {
+        float s = transform.localScale.x;
         while (s > min) {
             s -= Time.deltaTime * scaleSpeed;
             transform.localScale = new Vector3(s, s, 1);
             transform.Rotate(0, 0, -s * rotSpeed);
             yield return new WaitForEndOfFrame();
         }
-        SetLetter(l);
-        if (moveable) {
-            RandomAttribute();
-        } else {
-            Unlock();
-        }
-        while (s < x) {
+
+    }
+
+    public IEnumerator SpinOut(float scaleSpeed, float rotSpeed) {
+        float s = 0;
+        while (s < 1) {
             s += Time.deltaTime * scaleSpeed;
             transform.localScale = new Vector3(s, s, 1);
             transform.Rotate(0, 0, -s * rotSpeed);
             yield return new WaitForEndOfFrame();
         }
         transform.rotation = Quaternion.identity;
-        transform.localScale = new Vector3(x, x, 1);
+        transform.localScale = new Vector3(1, 1, 1);
         SubmitMode.canExit = true;
     }
 
@@ -109,7 +144,6 @@ public class Tile : MonoBehaviour {
         } else if (UnityEngine.Random.Range(0, 100) <= powerupChance) {
             powerUp = possiblePowerups.RandomItem();
             powerUp.Init(this);
-            Debug.Log(powerUp);
         } else {
             Unlock();
         }
@@ -122,8 +156,8 @@ public class Tile : MonoBehaviour {
     public void Lock() {
         if (!CanLock(board)) { return; }
         moveable = false;
-        background.color = Color.black;
-        background.enabled = true;
+        //background.color = Color.black;
+        lockBackground.enabled = true;
         powerUp = null;
     }
 
@@ -147,15 +181,14 @@ public class Tile : MonoBehaviour {
 
     public void FreezeTile() {
         moveable = true;
-        background.color = Color.cyan;
-        background.enabled = true;
+        iceBackground.enabled = true;
         powerUp = possiblePowerups.Where(x => x.name == "freeze").First();
     }
 
     public void Unlock() {
         moveable = true;
-        background.color = Color.white;
-        background.enabled = false;
+        lockBackground.enabled = false;
+        iceBackground.enabled = false;
     }
 
 }

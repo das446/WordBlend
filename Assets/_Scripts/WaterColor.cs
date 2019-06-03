@@ -18,9 +18,9 @@ public class WaterColor : MonoBehaviour {
         c = Color.Lerp(c, targetColor, Time.deltaTime * 0.05f);
         sprite.color = c;
 
-        Vector2 v = transform.position;
-        v.y -= Time.deltaTime * speed;
-        transform.position = v;
+        // Vector2 v = transform.position;
+        // v.y -= Time.deltaTime * speed;
+        // transform.position = v;
     }
 
     IEnumerator ChooseColor() {

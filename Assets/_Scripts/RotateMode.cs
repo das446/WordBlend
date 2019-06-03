@@ -14,6 +14,8 @@ public class RotateMode : MonoBehaviour, InputMode {
 
     bool canRotate = true;
 
+    public static event Action<Tile> FinishRotate;
+
     void Update() {
         if (!active) { return; }
 
@@ -109,56 +111,47 @@ public class RotateMode : MonoBehaviour, InputMode {
 
     private void RotatePieces(Tile sw, Tile nw, Tile ne, Tile se) {
         if (clockWise) {
-            RotatePiecesClockwise(sw, nw, ne, se);
+            StartCoroutine(RotatePiecesClockwise(sw, nw, ne, se));
         } else {
-            RotatePiecesCounterClockwise(sw, nw, ne, se);
+            StartCoroutine(RotatePiecesCounterClockwise(sw, nw, ne, se));
         }
     }
 
-    public void RotatePiecesClockwise(Tile sw, Tile nw, Tile ne, Tile se) {
+    public IEnumerator RotatePiecesClockwise(Tile sw, Tile nw, Tile ne, Tile se) {
 
         canRotate = false;
 
-        Vector2 swTarget = nw.transform.position;
-        Vector2 nwTarget = ne.transform.position;
-        Vector2 neTarget = se.transform.position;
-        Vector2 seTarget = sw.transform.position;
-        board.Rotate(sw.pos, clockWise);
-        StartCoroutine(MovePiece(sw, swTarget));
-        StartCoroutine(MovePiece(nw, nwTarget));
-        StartCoroutine(MovePiece(ne, neTarget));
-        StartCoroutine(MovePiece(se, seTarget));
+        Vector2Int swTarget = nw.pos;
+        Vector2Int nwTarget = ne.pos;
+        Vector2Int neTarget = se.pos;
+        Vector2Int seTarget = sw.pos;
+        StartCoroutine(sw.Move(swTarget, tileRotSpeed));
+        StartCoroutine(nw.Move(nwTarget, tileRotSpeed));
+        StartCoroutine(ne.Move(neTarget, tileRotSpeed));
+        yield return (StartCoroutine(se.Move(seTarget, tileRotSpeed)));
 
-        //yield return new WaitUntil(() => canRotate);
-
-    }
-
-    public void RotatePiecesCounterClockwise(Tile sw, Tile nw, Tile ne, Tile se) {
-
-        canRotate = false;
-
-        Vector2 swTarget = se.transform.position;
-        Vector2 nwTarget = sw.transform.position;
-        Vector2 neTarget = nw.transform.position;
-        Vector2 seTarget = ne.transform.position;
-        board.Rotate(sw.pos, clockWise);
-        StartCoroutine(MovePiece(sw, swTarget));
-        StartCoroutine(MovePiece(nw, nwTarget));
-        StartCoroutine(MovePiece(ne, neTarget));
-        StartCoroutine(MovePiece(se, seTarget));
-
-        //yield return new WaitUntil(() => canRotate);
-
-    }
-
-    public IEnumerator MovePiece(Tile t, Vector2 target) {
-        while (Vector3.Distance(t.transform.position, target) > 0.001f) {
-            t.transform.position = Vector3.Lerp(t.transform.position, target, Time.deltaTime * tileRotSpeed);
-            yield return new WaitForEndOfFrame();
-        }
-        //t.image.sortingOrder = (int) target.y;
-        t.transform.position = target;
         canRotate = true;
+        FinishRotate(OriginTile());
+
+    }
+
+    public IEnumerator RotatePiecesCounterClockwise(Tile sw, Tile nw, Tile ne, Tile se) {
+
+        canRotate = false;
+
+        Vector2Int swTarget = se.pos;
+        Vector2Int nwTarget = sw.pos;
+        Vector2Int neTarget = nw.pos;
+        Vector2Int seTarget = ne.pos;
+        StartCoroutine(sw.Move(swTarget, tileRotSpeed));
+        StartCoroutine(nw.Move(nwTarget, tileRotSpeed));
+        StartCoroutine(ne.Move(neTarget, tileRotSpeed));
+        yield return (StartCoroutine(se.Move(seTarget, tileRotSpeed)));
+
+        canRotate = true;
+
+        FinishRotate(OriginTile());
+
     }
 
     public void Enter() {

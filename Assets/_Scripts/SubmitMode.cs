@@ -24,6 +24,8 @@ public class SubmitMode : MonoBehaviour, InputMode {
     public GameObject verticalArrows;
 
     public static bool canExit = true;
+    [SerializeField] bool drop;
+    [SerializeField] float dropSpeed;
 
     public void Enter() {
         //submitButton.gameObject.SetActive(true);
@@ -168,19 +170,109 @@ public class SubmitMode : MonoBehaviour, InputMode {
     public void SubmitTiles(List<Tile> tiles) {
         int amnt = tiles.Count;
         canExit = false;
+        Audio.PlaySound("success");
+
+        if (drop) {
+            StartCoroutine(DropTiles(tiles));
+        } else {
+            ReplaceTiles(tiles);
+        }
+
+        Submit(amnt);
+        if (board.AmountLocked() == 0) {
+            board.LockRandomTile();
+        }
+    }
+
+    private IEnumerator DropTiles(List<Tile> tiles) {
+
+        List<Vector2Int> positions = tiles.Select(x => x.pos).ToList();
+        Dictionary<int, int> heights = new Dictionary<int, int>();
+        foreach (Vector2Int pos in positions) {
+            if (!heights.ContainsKey(pos.x)) {
+                heights.Add(pos.x, 0);
+            }
+            heights[pos.x] += 1;
+        }
+        List<Vector2Int> newPositions = new List<Vector2Int>();
+        foreach (Vector2Int pos in positions) {
+            int x = pos.x;
+            int y = heights[pos.x];
+            newPositions.Add(new Vector2Int(x, pos.y + y));
+        }
+
+        for (int i = 0; i < tiles.Count; i++) {
+            Tile tile = tiles[i];
+            tile.MakeParticles();
+            tile.powerUp?.Submit(tile);
+            Coroutine c = StartCoroutine(tile.SpinIn(scaleSpeed, rotSpeed));
+            if (i == tiles.Count - 1) {
+                yield return c;
+                Debug.Log("finish");
+            }
+        }
+
+        foreach (Tile tile in tiles) {
+            board.RemoveTile(tile);
+        }
+
+        List<Tile> tilesToMove = new List<Tile>();
+        for (int x = 0; x < board.width; x++) {
+            if (heights.ContainsKey(x)) {
+                DropColumn(x, heights[x]);
+            }
+        }
+
+    }
+
+    public void MoveTileDownOne(Tile t, int height, int toCreate) {
+        if (toCreate == 0) {
+            return;
+        }
+        Vector2Int newPos = t.pos;
+        Tile below = board.Get(newPos.x, newPos.y - 1);
+        if (below == null) {
+            return;
+        }
+
+        if (t.pos.y + height >= board.height) {
+            Tile up = board.CreateTile(new Vector2Int(newPos.x, newPos.y + 1));
+        } else {
+            Tile up = board.Get(newPos.x, newPos.y + 1);
+        }
+        newPos.y--;
+        t.Move(newPos, dropSpeed);
+
+    }
+
+    public void DropColumn(int col, int empty) {
+        for (int y = 0; y < board.height + empty; y++) {
+
+            Tile below = board.Get(col, y - 1);
+            Tile t;
+            if (y < board.height) {
+                t = board.Get(col, y);
+                if (t != Board.empty && t != Board.outOfBounds && (below == Board.empty)) {
+                    StartCoroutine(t.Move(new Vector2Int(col, y - empty), dropSpeed));
+                    //y--;
+                }
+            } else {
+                t = board.CreateTile(new Vector2Int(col, y));
+                StartCoroutine(t.Move(new Vector2Int(col, y - empty), dropSpeed));
+            }
+
+        }
+    }
+
+    private void ReplaceTiles(List<Tile> tiles) {
         foreach (Tile tile in tiles) {
             tile.MakeParticles();
             tile.powerUp?.Submit(tile);
             Letter l = board.RandomLetterWeighted();
-            if (board.CurrentVowels() < 4) {
+            if (board.CurrentVowels() < board.minVowels) {
                 l = board.RandomVowel();
             }
-            StartCoroutine(tile.ChangeLetter(l, scaleSpeed, rotSpeed));
-        }
-        Audio.PlaySound("success");
-        Submit(amnt);
-        if (board.AmountLocked() == 0) {
-            board.LockRandomTile();
+            StartCoroutine(tile.ReplaceLetter(l, scaleSpeed, rotSpeed));
         }
     }
 
