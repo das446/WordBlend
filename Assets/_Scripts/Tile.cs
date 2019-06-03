@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour {
     public Vector2Int pos;
     public Letter letter;
     public SpriteRenderer image;
-    [SerializeField] SpriteRenderer background,background2;
+    [SerializeField] SpriteRenderer lockBackground, iceBackground;
     [SerializeField] TextMeshPro tmp;
     [SerializeField] public bool moveable;
     public PowerUp powerUp;
@@ -123,8 +123,7 @@ public class Tile : MonoBehaviour {
         if (!CanLock(board)) { return; }
         moveable = false;
         //background.color = Color.black;
-        background.enabled = true;
-        background2.enabled = true;
+        lockBackground.enabled = true;
         powerUp = null;
     }
 
@@ -148,15 +147,14 @@ public class Tile : MonoBehaviour {
 
     public void FreezeTile() {
         moveable = true;
-        background.color = Color.cyan;
-        background.enabled = true;
+        iceBackground.enabled = true;
         powerUp = possiblePowerups.Where(x => x.name == "freeze").First();
     }
 
     public void Unlock() {
         moveable = true;
-        background.color = Color.white;
-        background.enabled = false;
+        lockBackground.enabled = false;
+        iceBackground.enabled = false;
     }
 
 }

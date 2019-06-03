@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] int[] pointVals;
     [SerializeField] Text text;
     Color defaultGrey;
+    float waterAnimSpeed;
 
     public static Action DeregisterEvents;
 
@@ -38,8 +39,7 @@ public class GameManager : MonoBehaviour {
 
         float waterDisplace = (pointsToAdd / 1000.0f);
         // Start Water Lerp 
-        if (water.transform.position.y < 2.5)
-        {
+        if (water.transform.position.y < 2.5) {
             oldWaterPos = water.transform.position;
             newWaterPos = new Vector3(water.transform.position.x, water.transform.position.y + waterDisplace, water.transform.position.z);
             waterLerpStart = Time.time;
@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour {
         timeBarImage = TimeBar.GetComponent<Image>();
         FreezePowerUp.FreezeTimer += FreezeTimer;
         defaultGrey = timerKnob.color;
+        waterAnimSpeed = water.gameObject.GetComponent<Animator>().speed;
     }
 
     void Update() {
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour {
                 Color c = Color.red;
                 c.a = 0.5f;
                 TimeBar.color = c;
+                water.gameObject.GetComponent<Animator>().speed = waterAnimSpeed;
             }
             curFreezeTime = 0f;
 
@@ -84,8 +86,7 @@ public class GameManager : MonoBehaviour {
             Lose();
         }
 
-        if (isWaterMoving)
-        {
+        if (isWaterMoving) {
             float timeSinceStart = Time.time - waterLerpStart;
             float lerpPercentTemp = timeSinceStart / waterMoveTime;
             water.transform.position = Vector3.Lerp(oldWaterPos, newWaterPos, lerpPercentTemp);
@@ -122,5 +123,6 @@ public class GameManager : MonoBehaviour {
         c.a = 0.5f;
         TimeBar.color = c;
         curFreezeTime = maxFreezeTime;
+        water.gameObject.GetComponent<Animator>().speed = 0;
     }
 }
