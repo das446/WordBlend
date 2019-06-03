@@ -109,7 +109,6 @@ public class Tile : MonoBehaviour {
         } else if (UnityEngine.Random.Range(0, 100) <= powerupChance) {
             powerUp = possiblePowerups.RandomItem();
             powerUp.Init(this);
-            Debug.Log(powerUp);
         } else {
             Unlock();
         }
