@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StartMenu : MonoBehaviour {
-    public void StartGame() {
+    public void StartGame(string mode) {
+        PlayerPrefs.SetString("Mode", mode);
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
-    public void GoToHelp(){
+     public void StartGame() {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+
+    public void GoToHelp() {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Help");
     }
 
-    public void GoToMain(){
+    public void GoToMain() {
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 

@@ -186,10 +186,10 @@ MonoBehaviour:
   min: 0.1
   possiblePowerups:
   - {fileID: 11400000, guid: ad38c0f16cd882e4f94bf73faa2df012, type: 2}
-  powerupChance: 3
+  powerupChance: 2
   particles: {fileID: 7833128157170688058, guid: 4786a17a68746b4418c6be2f9d2742b8,
     type: 3}
-  lockChance: 5
+  lockChance: 8
   board: {fileID: 0}
 --- !u!61 &1900251025020050310
 BoxCollider2D:

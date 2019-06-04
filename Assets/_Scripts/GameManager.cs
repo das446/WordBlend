@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour {
 
     public static Action DeregisterEvents;
 
+    public static string gameMode;
+
     private void GetPoints(int amnt) {
         points += pointVals[amnt];
         float pointsToAdd = pointVals[amnt];
@@ -48,6 +50,9 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
+
+        gameMode = PlayerPrefs.GetString("Mode", "arcade");
+
         isWaterMoving = false;
         currTime = maxTime;
         curFreezeTime = 0f;

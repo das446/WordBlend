@@ -29,6 +29,15 @@ public class SubmitMode : MonoBehaviour, InputMode {
 
     public static event Action Drop;
 
+    void Start(){
+        if(GameManager.gameMode=="zen"){
+            drop=false;
+        }
+        else{
+            drop=true;
+        }
+    }
+
     public void Enter() {
         //submitButton.gameObject.SetActive(true);
         gameObject.SetActive(true);
