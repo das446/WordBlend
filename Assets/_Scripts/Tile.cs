@@ -18,6 +18,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] List<PowerUp> possiblePowerups;
     [SerializeField] int powerupChance;
     [SerializeField] GameObject particles;
+    [SerializeField] float lockChance;
 
     public Board board;
 
@@ -70,8 +71,10 @@ public class Tile : MonoBehaviour {
         t.SetLetter(letter);
         t.powerUp = null;
 
-        transform.rotation = Quaternion.identity;
-        transform.localScale = new Vector3(1, 1, 1);
+        t.transform.rotation = Quaternion.identity;
+        t.transform.localScale = new Vector3(1, 1, 1);
+
+        t.RandomAttribute();
 
         return t;
     }
@@ -85,7 +88,6 @@ public class Tile : MonoBehaviour {
         }
         //t.image.sortingOrder = (int) target.y;
         transform.position = targetPos;
-        
 
     }
 
@@ -139,7 +141,7 @@ public class Tile : MonoBehaviour {
     }
 
     public void RandomAttribute() {
-        if (UnityEngine.Random.Range(0, 10) == 0) {
+        if (UnityEngine.Random.Range(0, 100) <= lockChance) {
             Lock();
         } else if (UnityEngine.Random.Range(0, 100) <= powerupChance) {
             powerUp = possiblePowerups.RandomItem();
@@ -158,7 +160,7 @@ public class Tile : MonoBehaviour {
         moveable = false;
         //background.color = Color.black;
         lockBackground.enabled = true;
-        powerUp = null;
+        //powerUp = null;
     }
 
     private bool CanLock(Board board) {

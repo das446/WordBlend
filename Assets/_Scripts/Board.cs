@@ -25,11 +25,6 @@ public class Board : MonoBehaviour {
             }
         }
 
-        List<Tile> toLock = tiles.RandomItems(3);
-        foreach (Tile item in toLock) {
-            item.Lock();
-        }
-
         empty = Instantiate(baseTile);
         outOfBounds = Instantiate(baseTile);
     }
@@ -149,7 +144,7 @@ public class Board : MonoBehaviour {
     }
 
     public void LockRandomTile() {
-        tiles.RandomItem(x => x.moveable).Lock();
+        tiles.RandomItem(x => x.moveable && x.powerUp==null).Lock();
     }
 
 }
